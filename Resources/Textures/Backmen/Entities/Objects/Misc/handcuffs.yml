@@ -1,13 +1,29 @@
 - type: entity
+  id: Purplecuffs
+  parent: [BaseItem, BaseSecurityCommandContraband]
   name: мягкие наручники
   description: Чтоб не наврядить ваши кисти, лучше использовать более мягкие штуки.
-  id: Purplecuffs
-  parent: Handcuffs
   components:
+  - type: Item
+    size: Small
+    storedRotation: 90
   - type: Handcuff
     cuffedRSI: Backmen/Objects/Misc/purplecuff.rsi
     bodyIconState: body-overlay
-    breakoutTime: 5
+  - type: DoAfter
   - type: Sprite
     sprite: Backmen/Objects/Misc/purplecuff.rsi
     state: cuff
+  - type: MeleeWeapon
+    wideAnimationRotation: 90
+    resetOnHandSelected: false
+    animation: WeaponArcDisarm
+    damage:
+      types:
+        Blunt: 0
+  - type: GuideHelp
+    guides:
+    - Security
+    - Antagonists
+  - type: UseDelay
+    delay: 3
