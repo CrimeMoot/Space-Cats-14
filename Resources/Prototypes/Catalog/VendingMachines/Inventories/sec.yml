@@ -2,6 +2,7 @@
   id: SecTechInventory
   startingInventory:
     SecurityWhistle: 5
+    Purplecuffs: 1 # Backmen
     Handcuffs: 8
     GrenadeFlashBang: 4
     TearGasGrenade: 4
