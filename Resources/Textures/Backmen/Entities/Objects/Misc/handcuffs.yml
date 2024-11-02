@@ -1,6 +1,6 @@
 - type: entity
   id: Purplecuffs
-  parent: [BaseItem, BaseSecurityCommandContraband]
+  parent: Handcuffs
   name: мягкие наручники
   description: Чтоб не наврядить ваши кисти, лучше использовать более мягкие штуки.
   components:
@@ -11,6 +11,12 @@
     cuffedRSI: Backmen/Objects/Misc/purplecuff.rsi
     bodyIconState: body-overlay
   - type: DoAfter
+  - type: Item
+    inhandVisuals:
+      left:
+        - state: inhand-left
+      right:
+        - state: inhand-right
   - type: Sprite
     sprite: Backmen/Objects/Misc/purplecuff.rsi
     state: cuff
