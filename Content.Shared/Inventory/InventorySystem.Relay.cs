@@ -48,10 +48,6 @@ public partial class InventorySystem
         SubscribeLocalEvent<InventoryComponent, GetBlurEvent>(RelayInventoryEvent);
         SubscribeLocalEvent<InventoryComponent, SolutionScanEvent>(RelayInventoryEvent);
 
-        // NightVision-Start
-        SubscribeLocalEvent<InventoryComponent, CanVisionAttemptEvent>(RelayInventoryEvent);
-        // NightVision-End
-
         // ComponentActivatedClientSystems
         SubscribeLocalEvent<InventoryComponent, RefreshEquipmentHudEvent<ShowJobIconsComponent>>(RelayInventoryEvent);
         SubscribeLocalEvent<InventoryComponent, RefreshEquipmentHudEvent<ShowHealthBarsComponent>>(RelayInventoryEvent);
