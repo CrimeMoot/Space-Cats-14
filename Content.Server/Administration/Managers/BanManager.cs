@@ -76,7 +76,7 @@ public sealed partial class BanManager : IBanManager, IPostInjectInit
 
 
         // CATS BANS EDIT START
-        _cfg.OnValueChanged(StarlightCCVars.DiscordBanWebhook, OnWebhookChanged, true);
+        _cfg.OnValueChanged(SpaceCatsCCVars.DiscordBanWebhook, OnWebhookChanged, true);
         _cfg.OnValueChanged(CVars.GameHostName, OnServerNameChanged, true);
         // CATS BANS EDIT end
 
