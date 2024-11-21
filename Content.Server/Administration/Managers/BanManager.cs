@@ -30,7 +30,7 @@ using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using CCVars = Content.Shared.CCVar.CCVars;
-using Content.Shared._Cats.CCVar; // STARLIGHT
+using Content.Shared._Cats.CCVar; // CATS BAN EDIT
 
 namespace Content.Server.Administration.Managers;
 
