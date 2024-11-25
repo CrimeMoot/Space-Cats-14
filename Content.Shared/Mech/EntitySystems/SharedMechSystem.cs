@@ -15,19 +15,22 @@ using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Weapons.Melee;
-using Content.Shared.Whitelist;
 using Robust.Shared.Containers;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
+using Robust.Shared.Random;
+using Content.Shared.Overlays;
+using Content.Shared.Whitelist;
 
 namespace Content.Shared.Mech.EntitySystems;
 
 /// <summary>
 /// Handles all of the interactions, UI handling, and items shennanigans for <see cref="MechComponent"/>
 /// </summary>
-public abstract class SharedMechSystem : EntitySystem
+public abstract partial class SharedMechSystem : EntitySystem   // Cats - partial
 {
+    [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
@@ -39,11 +42,10 @@ public abstract class SharedMechSystem : EntitySystem
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
-
     /// <inheritdoc/>
     public override void Initialize()
     {
-        SubscribeLocalEvent<MechComponent, MechToggleEquipmentEvent>(OnToggleEquipmentAction);
+    //    SubscribeLocalEvent<MechComponent, MechToggleEquipmentEvent>(OnToggleEquipmentAction); // Cats commit
         SubscribeLocalEvent<MechComponent, MechEjectPilotEvent>(OnEjectPilotEvent);
         SubscribeLocalEvent<MechComponent, UserActivateInWorldEvent>(RelayInteractionEvent);
         SubscribeLocalEvent<MechComponent, ComponentStartup>(OnStartup);
@@ -55,15 +57,26 @@ public abstract class SharedMechSystem : EntitySystem
         SubscribeLocalEvent<MechPilotComponent, GetMeleeWeaponEvent>(OnGetMeleeWeapon);
         SubscribeLocalEvent<MechPilotComponent, CanAttackFromContainerEvent>(OnCanAttackFromContainer);
         SubscribeLocalEvent<MechPilotComponent, AttackAttemptEvent>(OnAttackAttempt);
+
+        // Cats Mech start
+        SubscribeNetworkEvent<SelectMechEquipmentEvent>(OnMechEquipSelected);
+
+        SubscribeLocalEvent<MechComponent, MechGrabberEjectMessage>(ReceiveEquipmentUiMesssages);
+        SubscribeLocalEvent<MechComponent, MechSoundboardPlayMessage>(ReceiveEquipmentUiMesssages);
+
+        InitializeADT();
+        // Cats Mech end
+
     }
 
-    private void OnToggleEquipmentAction(EntityUid uid, MechComponent component, MechToggleEquipmentEvent args)
-    {
-        if (args.Handled)
-            return;
-        args.Handled = true;
-        CycleEquipment(uid);
-    }
+    // Cats Commented
+    // private void OnToggleEquipmentAction(EntityUid uid, MechComponent component, MechToggleEquipmentEvent args)
+    // {
+    //     if (args.Handled)
+    //         return;
+    //     args.Handled = true;
+    //     CycleEquipment(uid);
+    // }
 
     private void OnEjectPilotEvent(EntityUid uid, MechComponent component, MechEjectPilotEvent args)
     {
@@ -132,6 +145,13 @@ public abstract class SharedMechSystem : EntitySystem
         _actions.AddAction(pilot, ref component.MechCycleActionEntity, component.MechCycleAction, mech);
         _actions.AddAction(pilot, ref component.MechUiActionEntity, component.MechUiAction, mech);
         _actions.AddAction(pilot, ref component.MechEjectActionEntity, component.MechEjectAction, mech);
+        // Cats Content start
+        _actions.AddAction(pilot, ref component.MechInhaleActionEntity, component.MechInhaleAction, mech);
+        _actions.AddAction(pilot, ref component.MechTurnLightsActionEntity, component.MechTurnLightsAction, mech);
+
+        var ev = new SetupMechUserEvent(pilot);
+        RaiseLocalEvent(mech, ref ev);
+        // Cats Content end
     }
 
     private void RemoveUser(EntityUid mech, EntityUid pilot)
@@ -188,6 +208,15 @@ public abstract class SharedMechSystem : EntitySystem
         component.CurrentSelectedEquipment = equipmentIndex >= allEquipment.Count
             ? null
             : allEquipment[equipmentIndex];
+        // Cats Content start
+        while (TryComp<MechEquipmentComponent>(component.CurrentSelectedEquipment, out var equipment) && equipment.CanBeUsed == false)
+        {
+            equipmentIndex++;
+            component.CurrentSelectedEquipment = equipmentIndex >= allEquipment.Count
+                ? null
+                : allEquipment[equipmentIndex];
+        }
+        // Cats Content end
 
         var popupString = component.CurrentSelectedEquipment != null
             ? Loc.GetString("mech-equipment-select-popup", ("item", component.CurrentSelectedEquipment))
@@ -276,8 +305,8 @@ public abstract class SharedMechSystem : EntitySystem
         if (!Resolve(uid, ref component))
             return false;
 
-        if (component.Energy + delta < 0)
-            return false;
+        // if (component.Energy + delta < 0)    // Cats Commented
+        //     return false;                    // Почему тут стоит эта проверка, если используется Math.Clamp()?
 
         component.Energy = FixedPoint2.Clamp(component.Energy + delta, 0, component.MaxEnergy);
         Dirty(uid, component);
@@ -390,6 +419,18 @@ public abstract class SharedMechSystem : EntitySystem
         RemoveUser(uid, pilot);
         _container.RemoveEntity(uid, pilot);
         UpdateAppearance(uid, component);
+        // Cats Content start
+        if (_net.IsClient && _timing.IsFirstTimePredicted)
+        {
+            var ev = new CloseMechMenuEvent();
+            RaiseLocalEvent(pilot, ev);
+        }
+
+        if (HasComp<ShowHealthBarsComponent>(pilot))
+        {
+            RemComp<ShowHealthBarsComponent>(pilot);
+        }
+        // Cats Content end
         return true;
     }
 
@@ -448,7 +489,6 @@ public abstract class SharedMechSystem : EntitySystem
 
         args.CanDrop |= !component.Broken && CanInsert(uid, args.Dragged, component);
     }
-
 }
 
 /// <summary>
