@@ -21,8 +21,16 @@
   minBankBalance: 150
   maxBankBalance: 250
   wageDepartment: Medical
-  wage: 35
+  wage: 70
   #end-backmen: currency
+  special:
+  - !type:AddComponentSpecial
+    components:
+    #start-backmen: surgery
+    #- type: CPRTraining
+    - type: SurgerySpeedModifier
+      SpeedModifier: 1.75
+    #end-backmen: surgery
 
 - type: startingGear
   id: ParamedicGear

@@ -1,10 +1,10 @@
 using Content.Server.Body.Components;
 using Content.Server.Body.Systems;
-using Content.Shared.Chemistry.EntitySystems;
 using Content.Server.Fluids.EntitySystems;
 using Content.Server.Forensics;
 using Content.Server.Popups;
 using Content.Server.Stunnable;
+using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.IdentityManagement;
@@ -12,6 +12,7 @@ using Content.Shared.Nutrition.Components;
 using Content.Shared.Nutrition.EntitySystems;
 using Content.Shared.StatusEffect;
 using Robust.Server.Audio;
+using Content.Shared.Backmen.Mood;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
 
@@ -96,6 +97,8 @@ namespace Content.Server.Medical
             // Force sound to play as spill doesn't work if solution is empty.
             _audio.PlayPvs("/Audio/Effects/Fluids/splat.ogg", uid, AudioParams.Default.WithVariation(0.2f).WithVolume(-4f));
             _popup.PopupEntity(Loc.GetString("disease-vomit", ("person", Identity.Entity(uid, EntityManager))), uid);
+
+            RaiseLocalEvent(uid, new MoodEffectEvent("MobVomit")); // backmen: mood
         }
     }
 }

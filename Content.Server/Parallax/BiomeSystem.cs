@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -6,10 +7,13 @@ using Content.Server.Atmos.Components;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Decals;
 using Content.Server.Ghost.Roles.Components;
+using Content.Shared.Light.Components;
 using Content.Server.Shuttles.Events;
 using Content.Server.Shuttles.Systems;
 using Content.Shared.Atmos;
+using Content.Shared.CCVar;
 using Content.Shared.Decals;
+using Content.Shared.Ghost;
 using Content.Shared.Gravity;
 using Content.Shared.Parallax.Biomes;
 using Content.Shared.Parallax.Biomes.Layers;
@@ -51,6 +55,7 @@ public sealed partial class BiomeSystem : SharedBiomeSystem
 
     private EntityQuery<BiomeComponent> _biomeQuery;
     private EntityQuery<FixturesComponent> _fixturesQuery;
+    private EntityQuery<GhostComponent> _ghostQuery;
     private EntityQuery<TransformComponent> _xformQuery;
 
     private readonly HashSet<EntityUid> _handledEntities = new();
@@ -81,14 +86,52 @@ public sealed partial class BiomeSystem : SharedBiomeSystem
         Log.Level = LogLevel.Debug;
         _biomeQuery = GetEntityQuery<BiomeComponent>();
         _fixturesQuery = GetEntityQuery<FixturesComponent>();
+        _ghostQuery = GetEntityQuery<GhostComponent>();
         _xformQuery = GetEntityQuery<TransformComponent>();
         SubscribeLocalEvent<BiomeComponent, MapInitEvent>(OnBiomeMapInit);
         SubscribeLocalEvent<FTLStartedEvent>(OnFTLStarted);
         SubscribeLocalEvent<ShuttleFlattenEvent>(OnShuttleFlatten);
         Subs.CVar(_configManager, CVars.NetMaxUpdateRange, SetLoadRange, true);
         InitializeCommands();
-        SubscribeLocalEvent<PrototypesReloadedEventArgs>(ProtoReload);
+        SubscribeLocalEvent<TransformComponent, EntityTerminatingEvent>(OnEntityRemove); // cats
     }
+
+    // cats start
+    private void OnEntityRemove(EntityUid uid, TransformComponent transform, ref EntityTerminatingEvent ev)
+    {
+        // this is needed for clearing entities from BiomeComponent.LoadedEntities when they're getting deleted or else the biome cannot be saved
+        // this is happens due to transforming of EntityUid to the zero (or invalid entityuid in other words) which creates key duplicates in dictionary
+        // cuz of that serializer crashes
+
+        // is entity on biome
+        if (!_biomeQuery.TryGetComponent(transform.MapUid, out var biome))
+            return;
+
+        // is map initialized, if it is - we have nothing to do here
+        if (TryComp<MapComponent>(transform.MapUid, out var map) && map.MapInitialized)
+        {
+            return;
+        }
+
+        var cords = _transform.GetWorldPosition(transform);
+        var vector = new Vector2i((int) Math.Floor(cords.X / 8) * 8, (int) Math.Floor(cords.Y / 8) * 8);
+
+        biome.LoadedEntities.TryGetValue(vector, out var entities);
+        DebugTools.Assert(entities is not null, $"Cannot get chunk for entity {ev.Entity}");
+        entities.Remove(ev.Entity);
+
+        var modifiedTileCords = cords.Floored();
+        if (biome.ModifiedTiles.TryGetValue(vector, out var modifiedTilesChunk)) 
+        {
+            if (!modifiedTilesChunk.TryGetValue(modifiedTileCords, out _))
+                modifiedTilesChunk.Add(modifiedTileCords);
+        }
+        else
+        {
+            biome.ModifiedTiles.Add(vector, new() { modifiedTileCords });
+        }
+    }
+    // cats end
 
     private void ProtoReload(PrototypesReloadedEventArgs obj)
     {
@@ -315,6 +358,11 @@ public sealed partial class BiomeSystem : SharedBiomeSystem
         }
     }
 
+    private bool CanLoad(EntityUid uid)
+    {
+        return !_ghostQuery.HasComp(uid);
+    }
+
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
@@ -332,7 +380,8 @@ public sealed partial class BiomeSystem : SharedBiomeSystem
             if (_xformQuery.TryGetComponent(pSession.AttachedEntity, out var xform) &&
                 _handledEntities.Add(pSession.AttachedEntity.Value) &&
                  _biomeQuery.TryGetComponent(xform.MapUid, out var biome) &&
-                biome.Enabled)
+                biome.Enabled &&
+                CanLoad(pSession.AttachedEntity.Value))
             {
                 var worldPos = _transform.GetWorldPosition(xform);
                 AddChunksInRange(biome, worldPos);
@@ -349,7 +398,8 @@ public sealed partial class BiomeSystem : SharedBiomeSystem
                 if (!_handledEntities.Add(viewer) ||
                     !_xformQuery.TryGetComponent(viewer, out xform) ||
                     !_biomeQuery.TryGetComponent(xform.MapUid, out biome) ||
-                    !biome.Enabled)
+                    !biome.Enabled ||
+                    !CanLoad(viewer))
                 {
                     continue;
                 }
@@ -968,7 +1018,7 @@ public sealed partial class BiomeSystem : SharedBiomeSystem
             }
         }
 
-        grid.SetTiles(tiles);
+        _mapSystem.SetTiles(gridUid, grid, tiles);
         tiles.Clear();
         component.LoadedChunks.Remove(chunk);
 
@@ -1004,6 +1054,13 @@ public sealed partial class BiomeSystem : SharedBiomeSystem
         gravity.Enabled = true;
         gravity.Inherent = true;
         Dirty(mapUid, gravity, metadata);
+
+        // Add dynamic light to the map, which i'll start at a random time.
+
+        var cycle = EnsureComp<LightCycleComponent>(mapUid);
+        cycle.InitialTime = new Random().Next(0, (int) cycle.CycleDuration);
+
+        Dirty(mapUid, cycle, metadata);
 
         // Day lighting
         // Daylight: #D8B059

@@ -18,15 +18,14 @@
   - bloodsucker
   name: vampires-title
   description: vampires-description
-  minPlayers: 5
-  showInVote: true
+  showInVote: false
   rules:
   - VampiresGameRule
   - BasicStationEventScheduler
-  #  - WageScheduler #backmen: currency
+  - WageScheduler #backmen: currency
   - SubGamemodesRule
   - BasicRoundstartVariation
-  - MeteorSwarmScheduler
+  # - MeteorSwarmScheduler
 
 - type: gamePreset
   id: Blob
@@ -35,14 +34,14 @@
   name: blob-title
   description: blob-description
   minPlayers: 10
-  showInVote: true
+  showInVote: false
   rules:
   - BlobGameMode
   - BasicStationEventScheduler
-  #  -  #backmen: currency
+  - WageScheduler #backmen: currency
   - BasicRoundstartVariation
   - SubGamemodesRule
-  - MeteorSwarmScheduler
+  # - MeteorSwarmScheduler
 
 - type: gamePreset
   id: FleshCult
@@ -52,14 +51,14 @@
   name: flesh-cult-title
   description: flesh-cult-description
   minPlayers: 10
-  showInVote: true
+  showInVote: false
   rules:
   - FleshCult
   - BasicStationEventScheduler
-  #  -  #backmen: currency
+  - WageScheduler #backmen: currency
   - BasicRoundstartVariation
   - SubGamemodesRule
-  - MeteorSwarmScheduler
+  # - MeteorSwarmScheduler
 
 - type: gamePreset
   id: FleshCultAndTraitor
@@ -75,7 +74,7 @@
   - BasicStationEventScheduler
   #  -  #backmen: currency
   - BasicRoundstartVariation
-  - MeteorSwarmScheduler
+  # - MeteorSwarmScheduler
 
 - type: gamePreset
   id: NukeopsFleshCult
@@ -91,7 +90,7 @@
     - BasicStationEventScheduler
     #  -  #backmen: currency
     - BasicRoundstartVariation
-    - MeteorSwarmScheduler
+    # - MeteorSwarmScheduler
 
 - type: gamePreset
   id: RevolutionaryTraitor
@@ -109,7 +108,7 @@
     - Traitor
     #  -  #backmen: currency
     - BasicRoundstartVariation
-    - MeteorSwarmScheduler
+    # - MeteorSwarmScheduler
 
 - type: gamePreset
   id: RevolutionaryNukeops
@@ -127,7 +126,7 @@
     - Nukeops
     #  -  #backmen: currency
     - BasicRoundstartVariation
-    - MeteorSwarmScheduler
+    # - MeteorSwarmScheduler
 
 - type: gamePreset
   id: ZombieTraitor
@@ -147,7 +146,7 @@
   #  -  #backmen: currency
   - Traitor
   - BasicRoundstartVariation
-  - MeteorSwarmScheduler
+  # - MeteorSwarmScheduler
 
 - type: gamePreset
   id: ZombieNukeops
@@ -167,7 +166,7 @@
   #  -  #backmen: currency
   - Nukeops
   - BasicRoundstartVariation
-  - MeteorSwarmScheduler
+  # - MeteorSwarmScheduler
 
 - type: gamePreset
   id: NukeopsFleshCultTraitor
@@ -185,7 +184,7 @@
     #  -  #backmen: currency
     - Traitor
     - BasicRoundstartVariation
-    - MeteorSwarmScheduler
+    # - MeteorSwarmScheduler
 
 - type: gamePreset
   id: SurvivalNukeops
@@ -201,7 +200,7 @@
     #  -  #backmen: currency
     - Nukeops
     - BasicRoundstartVariation
-    - MeteorSwarmScheduler
+    # - MeteorSwarmScheduler
 
 
 - type: gamePreset
@@ -212,15 +211,15 @@
   - changeling
   name: changeling-gamemode-title
   description: changeling-gamemode-description
-  showInVote: true
+  showInVote: false
   minPlayers: 5
   rules:
-#  - WageScheduler #backmen: currency
+  - WageScheduler #backmen: currency
   - Changeling
   - SubGamemodesRule
   - BasicStationEventScheduler
   - BasicRoundstartVariation
-  - MeteorSwarmScheduler
+  # - MeteorSwarmScheduler
 
 - type: gamePreset
   id: Traitorling
@@ -231,13 +230,13 @@
   description: secret-description
   showInVote: false
   rules:
-#  - WageScheduler #backmen: currency
+  - WageScheduler #backmen: currency
   - Changeling
   - Traitor
   - SubGamemodesRule
   - BasicStationEventScheduler
   - BasicRoundstartVariation
-  - MeteorSwarmScheduler
+  # - MeteorSwarmScheduler
 
 - type: gamePreset
   id: ExtendedThief
@@ -251,9 +250,9 @@
   rules:
   - ExtendedThief
   - BasicStationEventScheduler
-#  - WageScheduler #backmen: currency
+  - WageScheduler #backmen: currency
   - BasicRoundstartVariation
-  - MeteorSwarmScheduler
+  # - MeteorSwarmScheduler
 
 - type: gamePreset
   id: Criminal
@@ -268,6 +267,54 @@
   - ExtendedThief
   - Traitor
   - BasicStationEventScheduler
-#  - WageScheduler #backmen: currency
+  - WageScheduler #backmen: currency
   - BasicRoundstartVariation
-  - MeteorSwarmScheduler
+  # - MeteorSwarmScheduler
+
+- type: gamePreset
+  id: SuperKessler
+  alias:
+  - supermeteor
+  - bombit
+  - superkessler
+  - superkesler
+  name: super-kessler-gamemode-title
+  description: super-kessler-gamemode-description
+  showInVote: false
+  rules:
+  - BasicStationEventScheduler
+  - WageScheduler #backmen: currency
+#  - BasicRoundstartVariation
+  # Oh my god.
+#  - KesslerSyndromeScheduler
+  # - MeteorSwarmMildScheduler
+  # - MeteorSwarmScheduler
+  - RampingStationEventScheduler
+#  - SpaceTrafficControlEventScheduler
+#  - SpaceTrafficControlFriendlyEventScheduler
+
+- type: gamePreset
+  id: Calm
+  name: calm-title
+  showInVote: false
+  description: calm-description
+  rules:
+  - CalmStationEventScheduler
+  - WageScheduler #backmen: currency
+#  - CalmMeteorSwarmScheduler
+  - BasicRoundstartVariation
+
+- type: gamePreset
+  id: BabelTower
+  name: babelTower-title
+  description: babelTower-description
+  minPlayers: 5
+  showInVote: false
+  rules:
+    - BabelTower
+    - BasicStationEventScheduler
+    - WageScheduler
+    - BasicRoundstartVariation
+#    - SpaceTrafficControlEventScheduler
+#    - SpaceTrafficControlFriendlyEventScheduler
+    - ExtendedThief

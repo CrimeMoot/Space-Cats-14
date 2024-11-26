@@ -48,9 +48,10 @@
   specForceName: spec-forces-system-deathsquad-name
   shuttlePath: Maps/Backmen/Shuttles/SpecForces/Invincible.yml
   spawnMarker: MarkerSpecforce
-  maxRolesAmount: 6
+  maxRolesAmount: 5
   guaranteedSpawn:
     - id: SpawnMobHumanSpecialReAgentCOM
+    - id: SpawnSpestnazHeavyWeaponGuy
     - id: SpawnMobHumanSFOfficer
       prob: 0.7
   specForceSpawn:
@@ -60,12 +61,12 @@
 - type: specForceTeam
   id: ERTAlpha
   specForceName: spec-forces-system-alpha-name
-  shuttlePath: Maps/Backmen/Shuttles/SpecForces/NT-CC-Specnaz-013.yml
+  shuttlePath: Maps/Backmen/Shuttles/SpecForces/NTSF-Palm-AL1.yml
   spawnMarker: MarkerSpecforce
   announcementText: spec-forces-system-ertcall-annonce
   announcementTitle: spec-forces-system-ertAlpha-title
   announcementSoundPath: /Audio/Corvax/Adminbuse/Yesert.ogg
-  maxRolesAmount: 6
+  maxRolesAmount: 4
   raffleConfig:
     settings: short
   guaranteedSpawn:
@@ -100,7 +101,7 @@
 - type: specForceTeam
   id: ERTTay
   specForceName: spec-forces-system-tay-name
-  shuttlePath: Maps/Backmen/Shuttles/SpecForces/NTMH-Medivak-TH39.yml
+  shuttlePath: Maps/Backmen/Shuttles/SpecForces/NT-QRF-TH39.yml
   spawnMarker: MarkerSpecforce
   announcementText: spec-forces-system-ertcall-annonce
   announcementTitle: spec-forces-system-ertTay-title

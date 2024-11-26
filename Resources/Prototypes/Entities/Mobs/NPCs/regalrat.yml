@@ -122,8 +122,23 @@
   - type: Grammar
     attributes:
       gender: male
+  - type: Sharp
   - type: TTS # Corvax-TTS
     voice: Npc1
+  - type: LanguageKnowledge
+    speaks:
+    - TauCetiBasic
+    - Mouse
+    understands:
+    - TauCetiBasic
+    - Mouse
+  # start-backmen: surgery
+  - type: SurgeryTarget
+  - type: UserInterface
+    interfaces:
+      enum.SurgeryUIKey.Key:
+        type: SurgeryBui
+  # end-backmen: surgery
 
 - type: entity
   id: MobRatKingBuff
@@ -201,7 +216,11 @@
     - map: [ "enum.DamageStateVisualLayers.BaseUnshaded"]
       state: eyes
       shader: unshaded
-
+  - type: SurgeryTarget
+  - type: UserInterface
+    interfaces:
+      enum.SurgeryUIKey.Key:
+        type: SurgeryBui
   - type: SpriteMovement
     movementLayers:
       movement:

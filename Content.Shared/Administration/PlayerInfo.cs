@@ -15,7 +15,7 @@ public sealed record PlayerInfo(
     bool Connected,
     bool ActiveThisRound,
     TimeSpan? OverallPlaytime,
-    NetEntity? NetEntityOwn // backmen: SAI display visited mind
+    bool AutoGpt = false // backmen: gpt
     )
 {
     private string? _playtimeString;

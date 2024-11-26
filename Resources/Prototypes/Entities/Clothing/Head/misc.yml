@@ -97,6 +97,7 @@
   - type: Clothing
     sprite: Clothing/Head/Misc/head_mirror.rsi
 
+
 - type: entity
   parent: ClothingHeadBase
   id: ClothingHeadHatRichard
@@ -207,7 +208,6 @@
     sprite: Clothing/Head/Hats/catears.rsi
   - type: AddAccentClothing
     accent: OwOAccent
-
 - type: entity
   categories: [ Actions, HideSpawnMenu ]
   id: ActionBecomeValid
@@ -312,3 +312,14 @@
       - WhitelistChameleon
   - type: StaticPrice
     price: 1
+
+- type: entity
+  parent: ClothingHeadBase
+  id: ClothingHeadHatHairflower
+  name: hairflower
+  description: A beautiful hairflower that can be inserted between locks of hair.
+  components:
+  - type: Sprite
+    sprite: Clothing/Head/Misc/hairflower.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Misc/hairflower.rsi

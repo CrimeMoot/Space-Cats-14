@@ -61,6 +61,7 @@ namespace Content.Client.Input
             human.AddFunction(ContentKeyFunctions.UseItemInHand);
             human.AddFunction(ContentKeyFunctions.AltUseItemInHand);
             human.AddFunction(ContentKeyFunctions.OpenCharacterMenu);
+            human.AddFunction(ContentKeyFunctions.OpenLanguageMenu); //backmen: languages
             human.AddFunction(ContentKeyFunctions.OpenEmotesMenu);
             human.AddFunction(ContentKeyFunctions.ActivateItemInWorld);
             human.AddFunction(ContentKeyFunctions.ThrowItemInHand);
@@ -85,6 +86,16 @@ namespace Content.Client.Input
             human.AddFunction(ContentKeyFunctions.Arcade1);
             human.AddFunction(ContentKeyFunctions.Arcade2);
             human.AddFunction(ContentKeyFunctions.Arcade3);
+            human.AddFunction(ContentKeyFunctions.ToggleStanding); // Ataraxia
+            human.AddFunction(ContentKeyFunctions.LookUp); // BACKMEN EDIT
+            human.AddFunction(CMKeyFunctions.CMUniqueAction); // BACKMEN EDIT
+            human.AddFunction(ContentKeyFunctions.OfferItem); // Ataraxia
+            human.AddFunction(ContentKeyFunctions.TargetHead);
+            human.AddFunction(ContentKeyFunctions.TargetTorso);
+            human.AddFunction(ContentKeyFunctions.TargetLeftArm);
+            human.AddFunction(ContentKeyFunctions.TargetRightArm);
+            human.AddFunction(ContentKeyFunctions.TargetLeftLeg);
+            human.AddFunction(ContentKeyFunctions.TargetRightLeg);
 
             // actions should be common (for ghosts, mobs, etc)
             common.AddFunction(ContentKeyFunctions.OpenActionsMenu);
@@ -124,15 +135,6 @@ namespace Content.Client.Input
             common.AddFunction(ContentKeyFunctions.OpenDecalSpawnWindow);
             common.AddFunction(ContentKeyFunctions.OpenAdminMenu);
             common.AddFunction(ContentKeyFunctions.OpenGuidebook);
-
-
-            CMFunctions(contexts);
-        }
-
-        private static void CMFunctions(IInputContextContainer contexts)
-        {
-            var human = contexts.GetContext("human");
-            human.AddFunction(CMKeyFunctions.CMUniqueAction);
         }
     }
 }

@@ -18,6 +18,7 @@
     inHandsFillBaseName: -fill-
     inHandsMaxFillLevels: 2
   - type: MeleeWeapon
+    canBeBlocked: false # CATS EDIT
     damage:
       types:
         Blunt: 10
@@ -194,9 +195,9 @@
     entries:
     - label: corvax-hidden-desc-WetFloorSignMineExplosive-syndicate
       whitelistMind:
-        components:
-          - TraitorRole
-          - NukeOperative
+        mindRoles:
+        - TraitorRole
+        - NukeopsRole
     - label: corvax-hidden-desc-WetFloorSignMineExplosive-research
       jobRequired:
         - ResearchAssistant

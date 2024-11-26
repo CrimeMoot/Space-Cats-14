@@ -43,6 +43,7 @@ public sealed partial class RevenantSystem
     [Dependency] private readonly TileSystem _tile = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
     [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
+    [Dependency] private readonly RevenantAnimatedSystem _revenantAnimated = default!;
 
     private void InitializeAbilities()
     {
@@ -54,6 +55,7 @@ public sealed partial class RevenantSystem
         SubscribeLocalEvent<RevenantComponent, RevenantOverloadLightsActionEvent>(OnOverloadLightsAction);
         SubscribeLocalEvent<RevenantComponent, RevenantBlightActionEvent>(OnBlightAction);
         SubscribeLocalEvent<RevenantComponent, RevenantMalfunctionActionEvent>(OnMalfunctionAction);
+        SubscribeLocalEvent<RevenantComponent, RevenantAnimateEvent>(OnAnimateAction);
     }
 
     private void OnInteract(EntityUid uid, RevenantComponent component, UserActivateInWorldEvent args)
@@ -322,11 +324,12 @@ public sealed partial class RevenantSystem
         // TODO: When disease refactor is in.
 
         // backmen-start: Disease
+        var disSys = EntityManager.System<Backmen.Disease.DiseaseSystem>();
         var emo = GetEntityQuery<Shared.Backmen.Disease.DiseaseCarrierComponent>();
         foreach (var ent in _lookup.GetEntitiesInRange(uid, component.BlightRadius))
         {
-            if (emo.TryGetComponent(ent, out var comp))
-                EntityManager.System<Backmen.Disease.DiseaseSystem>().TryAddDisease(ent, component.BlightDiseasePrototypeId, comp);
+            if (emo.TryComp(ent, out var comp))
+                disSys.TryAddDisease(ent, component.BlightDiseasePrototypeId, comp);
         }
         EntityManager.System<Shared.Backmen.Abilities.Psionics.SharedPsionicAbilitiesSystem>().LogPowerUsed(uid, Loc.GetString("revenant-psionic-power"), 6, 10);
         // backmen-end: Disease
@@ -350,5 +353,14 @@ public sealed partial class RevenantSystem
 
             _emag.DoEmagEffect(uid, ent); //it does not emag itself. adorable.
         }
+    }
+
+    private void OnAnimateAction(EntityUid uid, RevenantComponent comp, RevenantAnimateEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        if (_revenantAnimated.CanAnimateObject(args.Target) && TryUseAbility(uid, comp, comp.AnimateCost, comp.AnimateDebuffs))
+            _revenantAnimated.TryAnimateObject(args.Target, comp.AnimateTime, (uid, comp));
     }
 }

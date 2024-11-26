@@ -19,11 +19,10 @@
     - !type:OverallPlaytimeRequirement
       time: 180000 #50 hrs # Corvax-RoleTime
     - !type:AgeRequirement
-      requiredAge: 21
+      requiredAge: 21 # cats
   weight: 20
   startingGear: HoPGear
   icon: "JobIconHeadOfPersonnel"
-  requireAdminNotify: true
   supervisors: job-supervisors-captain
   canBeAntag: false
   access:
@@ -54,10 +53,10 @@
   - Atmospherics
   - Medical
   #start-backmen: currency
-  minBankBalance: 400
-  maxBankBalance: 600
+  minBankBalance: 500
+  maxBankBalance: 750
   wageDepartment: Command
-  wage: 100
+  wage: 250
   #end-backmen: currency
   special:
     - !type:AddComponentSpecial

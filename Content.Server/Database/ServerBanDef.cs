@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -16,7 +15,7 @@ namespace Content.Server.Database
         public int? Id { get; }
         public NetUserId? UserId { get; }
         public (IPAddress address, int cidrMask)? Address { get; }
-        public ImmutableArray<byte>? HWId { get; }
+        public ImmutableTypedHwid? HWId { get; }
 
         public DateTimeOffset BanTime { get; }
         public DateTimeOffset? ExpirationTime { get; }
@@ -26,12 +25,12 @@ namespace Content.Server.Database
         public NoteSeverity Severity { get; set; }
         public NetUserId? BanningAdmin { get; }
         public ServerUnbanDef? Unban { get; }
+        public ServerBanExemptFlags ExemptFlags { get; }
 
-        public ServerBanDef(
-            int? id,
+        public ServerBanDef(int? id,
             NetUserId? userId,
             (IPAddress, int)? address,
-            ImmutableArray<byte>? hwId,
+            TypedHwid? hwId,
             DateTimeOffset banTime,
             DateTimeOffset? expirationTime,
             int? roundId,
@@ -39,7 +38,8 @@ namespace Content.Server.Database
             string reason,
             NoteSeverity severity,
             NetUserId? banningAdmin,
-            ServerUnbanDef? unban)
+            ServerUnbanDef? unban,
+            ServerBanExemptFlags exemptFlags = default)
         {
             if (userId == null && address == null && hwId == null)
             {
@@ -65,6 +65,7 @@ namespace Content.Server.Database
             Severity = severity;
             BanningAdmin = banningAdmin;
             Unban = unban;
+            ExemptFlags = exemptFlags;
         }
 
         public string FormatBanMessage(IConfigurationManager cfg, ILocalizationManager loc)

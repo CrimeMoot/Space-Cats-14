@@ -112,6 +112,21 @@
     speechSounds: Slime
   - type: TypingIndicator
     proto: slime
+  - type: LanguageSpeaker
+    currentLanguage: Slime
+  - type: LanguageKnowledge #backmen: languages
+    speaks:
+    - Slime
+    understands:
+    - Slime
+    - TauCetiBasic
+  # start-backmen: surgery
+  - type: SurgeryTarget
+  - type: UserInterface
+    interfaces:
+      enum.SurgeryUIKey.Key:
+        type: SurgeryBui
+  # end-backmen: surgery
 
 - type: entity
   name: basic slime
@@ -120,8 +135,8 @@
   abstract: true
   description: It looks so much like jelly. I wonder what it tastes like?
   components:
-  - type: ReplacementAccent
-    accent: slimes
+#  - type: ReplacementAccent
+#    accent: slimes
   - type: GhostTakeoverAvailable
   - type: GhostRole
     makeSentient: true

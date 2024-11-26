@@ -127,9 +127,6 @@
     openState: ripley-open
     brokenState: ripley-broken
     mechToPilotDamageMultiplier: 0.75
-    pilotWhitelist:
-      components:
-        - HumanoidAppearance
   - type: MeleeWeapon
     hidden: true
     attackRate: 1
@@ -167,6 +164,8 @@
   - type: FootstepModifier
     footstepSoundCollection:
       collection: FootstepClown
+      params:
+        variation: 0.17
   - type: Mech
     baseState: honker
     openState: honker-open
@@ -288,6 +287,9 @@
   - type: MovementSpeedModifier
     baseWalkSpeed: 2.25
     baseSprintSpeed: 3.6
+  - type: Access
+    tags:
+    - Maintenance
   # TOOD: buzz / chime actions
   # TODO: builtin flashlight
 

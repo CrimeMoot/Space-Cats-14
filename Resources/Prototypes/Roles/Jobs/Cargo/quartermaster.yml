@@ -12,11 +12,9 @@
       time: 36000 #10 hrs # Corvax-RoleTime
     - !type:DepartmentTimeRequirement
       department: Cargo
-      time: 54000 #15 hrs # Corvax-RoleTime
-#    - !type:OverallPlaytimeRequirement
-#      time: 144000 #40 hrs
-    - !type:AgeRequirement
-      requiredAge: 21
+      time: 36000 #10 hours
+    - !type:OverallPlaytimeRequirement
+      time: 144000 #40 hrs
   weight: 10
   startingGear: QuartermasterGear
   icon: "JobIconQuarterMaster"
@@ -27,14 +25,15 @@
   - Salvage
   - Quartermaster
   - Maintenance
+  - External
   - Command
   - Brig
   - Cryogenics
   #start-backmen: currency
-  minBankBalance: 150
-  maxBankBalance: 250
+  minBankBalance: 300
+  maxBankBalance: 500
   wageDepartment: Cargo
-  wage: 50
+  wage: 150
   #end-backmen: currency
   special:
   - !type:AddImplantSpecial

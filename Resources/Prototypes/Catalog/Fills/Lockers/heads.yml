@@ -9,6 +9,7 @@
     - id: CargoSaleComputerCircuitboard
     - id: CargoShuttleComputerCircuitboard
     - id: CargoShuttleConsoleCircuitboard
+    - id: SalvageMagnetMachineCircuitboard
     - id: CigPackGreen
       prob: 0.50
     - id: ClothingHeadsetAltCargo
@@ -16,8 +17,9 @@
     - id: RubberStampApproved
     - id: RubberStampDenied
     - id: RubberStampQm
-    - id: SalvageShuttleConsoleCircuitboard
+    - id: AstroNavCartridge
     - id: PrinterDocFlatpack # Corvax-Printer
+    - id: AstroNavCartridge
 
 - type: entity
   id: LockerQuarterMasterFilled
@@ -39,27 +41,26 @@
       prob: 0.25
     - id: ClothingBeltSheathFilled
     - id: ClothingHeadsetAltCommand
-    - id: ClothingOuterArmorCaptainCarapace
+#    - id: ClothingOuterArmorCaptainCarapace # cats edit
     - id: CommsComputerCircuitboard
-    - id: DoorRemoteCommand
-    - id: MedalCase
+    - id: DoorRemoteCommand 
+#    - id: MedalCase # cats edit
     - id: NukeDisk
     - id: PinpointerNuclear
     - id: PlushieNuke
       prob: 0.1
     - id: RubberStampCaptain
     - id: SpaceCash1000
-    - id: WeaponDisabler
-    - id: Eftpos # backmen
-    - id: Eftpos # backmen
+#    - id: ClothingEyesGlassesCommand
     - id: Eftpos # backmen
     # Corvax-Resprite-Start
-    - id: ClothingHeadCaptainHat
-    - id: ClothingOuterCoatCaptain
+#    - id: ClothingHeadCaptainHat
+#    - id: ClothingOuterCoatCaptain
     # Corvax-Resprite-End
     - id: AntiPsychicKnife  # backmen
     - id: ClothingHeadCage # backmen
     - id: HandheldReinforcementCentCom # backmen
+#    - id: ClothingEyesGlassesCommand
 
 # No laser table + Laser table
 - type: entityTable
@@ -141,11 +142,11 @@
     - id: RubberStampApproved
     - id: RubberStampDenied
     - id: RubberStampHop
-    - id: WeaponDisabler
     - id: AntiPsychicKnife # backmen
     - id: ClothingHeadCage # backmen
     - id: ClothingOuterCoatHOP # Corvax-Resprite
     - id: PrinterDocFlatpack # Corvax-Printer
+    - id: ClothingEyesHudCommand
 
 - type: entity
   id: LockerHeadOfPersonnelFilled
@@ -240,6 +241,8 @@
     - id: ClothingHeadCage # backmen
     - id: PrinterDocFlatpack # Corvax-Printer
     - id: FlatpackMetempsychoticMachine # backmen
+    - id: MedicalBiofabMachineBoard # backmen
+    - id: MedTekCartridge
 #    - id: genguns # space cats
 
 # Hardsuit table, used for suit storage as well
@@ -282,12 +285,12 @@
   id: LockerFillResearchDirectorNoHardsuit
   table: !type:AllSelector
     children:
+    - id: Intellicard
     - id: BoxEncryptionKeyScience
     - id: CircuitImprinterMachineCircuitboard
     - id: ClothingBeltUtilityFilled
     - id: ClothingHeadsetAltScience
     - id: DoorRemoteResearch
-    - id: EncryptionKeyBinary
     - id: HandTeleporter
     - id: ProtolatheMachineCircuitboard
     - id: ResearchComputerCircuitboard
@@ -298,6 +301,7 @@
     - id: FlatpackOracle # backmen
     - id: FlatpackSophie # backmen
     - id: AnomalyPinpointer # cats
+    - id: ClothingOuterReactiveArmor # cats
 
 # Hardsuit table, used for suit storage as well
 - type: entityTable
@@ -339,7 +343,7 @@
   id: LockerFillHeadOfSecurityNoHardsuit
   table: !type:AllSelector
     children:
-    - id: BookSecretDocuments
+    - id: WeaponEnergyShotgun
     - id: BookSpaceLaw
     - id: BoxEncryptionKeySecurity
     - id: CigarGoldCase
@@ -354,12 +358,12 @@
     - id: HoloprojectorSecurity
     - id: RubberStampHos
     - id: SecurityTechFabCircuitboard
-    - id: WeaponDisabler
+    - id: WeaponEnergyGunDominator
     - id: AntiPsychicKnife # backmen
     - id: ClothingHeadCage # backmen
     - id: PrinterDocFlatpack # Corvax-Printer
+    - id: WantedListCartridge
     - id: ClothingHeadHatCapHoS # Corvax-SecFashion
-      prob: 0.5
     - id: ClothingOuterCoatHoSGreatcoat # Corvax-Resprite
     - id: BookBusido # Corvax-Books
 

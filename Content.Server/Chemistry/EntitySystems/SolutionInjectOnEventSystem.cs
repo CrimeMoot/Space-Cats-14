@@ -1,7 +1,9 @@
 using Content.Server.Body.Components;
 using Content.Server.Body.Systems;
 using Content.Server.Chemistry.Components;
-using Content.Server.Chemistry.Containers.EntitySystems;
+using Content.Shared.Chemistry.EntitySystems;
+using Content.Shared.Chemistry.Events;
+using Content.Shared._Cats.Blocking;
 using Content.Shared.Inventory;
 using Content.Shared.Popups;
 using Content.Shared.Projectiles;
@@ -20,7 +22,7 @@ public sealed class SolutionInjectOnCollideSystem : EntitySystem
     [Dependency] private readonly BloodstreamSystem _bloodstream = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SolutionContainerSystem _solutionContainer = default!;
+    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainer = default!;
     [Dependency] private readonly TagSystem _tag = default!;
 
     public override void Initialize()
@@ -28,7 +30,9 @@ public sealed class SolutionInjectOnCollideSystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<SolutionInjectOnProjectileHitComponent, ProjectileHitEvent>(HandleProjectileHit);
         SubscribeLocalEvent<SolutionInjectOnEmbedComponent, EmbedEvent>(HandleEmbed);
-        SubscribeLocalEvent<MeleeChemicalInjectorComponent, MeleeHitEvent>(HandleMeleeHit);
+        SubscribeLocalEvent<SolutionInjectWhileEmbeddedComponent, InjectOverTimeEvent>(OnInjectOverTime);
+        SubscribeLocalEvent<MeleeChemicalInjectorComponent, MeleeHitEvent>(HandleMeleeHit,
+            after: new[] {typeof(MeleeBlockSystem)}); // CATS EDIT
     }
 
     private void HandleProjectileHit(Entity<SolutionInjectOnProjectileHitComponent> entity, ref ProjectileHitEvent args)
@@ -43,10 +47,18 @@ public sealed class SolutionInjectOnCollideSystem : EntitySystem
 
     private void HandleMeleeHit(Entity<MeleeChemicalInjectorComponent> entity, ref MeleeHitEvent args)
     {
+        if (args.Handled) // CATS EDIT
+            return;
+
         // MeleeHitEvent is weird, so we have to filter to make sure we actually
         // hit something and aren't just examining the weapon.
         if (args.IsHit)
             TryInjectTargets((entity.Owner, entity.Comp), args.HitEntities, args.User);
+    }
+
+    private void OnInjectOverTime(Entity<SolutionInjectWhileEmbeddedComponent> entity, ref InjectOverTimeEvent args)
+    {
+        DoInjection((entity.Owner, entity.Comp), args.EmbeddedIntoUid);
     }
 
     private void DoInjection(Entity<BaseSolutionInjectOnEventComponent> injectorEntity, EntityUid target, EntityUid? source = null)

@@ -110,6 +110,7 @@
         - GasScrubber
         - Unstackable
     - type: Sprite
+      noRot: true
       drawdepth: FloorObjects
       sprite: Structures/Piping/Atmospherics/scrubber.rsi
       layers:
@@ -224,6 +225,7 @@
       examinableAddress: true
     - type: WiredNetworkConnection
     - type: PowerSwitch
+    - type: StationAiWhitelist
 
 - type: entity
   parent: BaseGasThermoMachine
@@ -233,6 +235,7 @@
   placement:
     mode: SnapgridCenter
   components:
+    - type: StationAiWhitelist
     - type: Sprite
       granularLayersRendering: true
       layers:
@@ -277,6 +280,7 @@
   placement:
     mode: SnapgridCenter
   components:
+    - type: StationAiWhitelist
     - type: Sprite
       granularLayersRendering : true
       layers:

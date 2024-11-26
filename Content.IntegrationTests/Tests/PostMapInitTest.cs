@@ -17,6 +17,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
 using Content.Shared.Station.Components;
+using FastAccessors;
 using Robust.Shared.Utility;
 using YamlDotNet.RepresentationModel;
 
@@ -58,6 +59,9 @@ namespace Content.IntegrationTests.Tests
             "CorvaxTerra",
             "CorvaxFrame",
             "CorvaxPearl",
+            "CorvaxTushkan",
+            //"CorvaxGlacier",
+            "CorvaxAwesome",
             // Corvax-End
             "Dev",
             "TestTeg",
@@ -71,6 +75,17 @@ namespace Content.IntegrationTests.Tests
             "Core",
             "Marathon",
             "MeteorArena",
+            //start-spacecats
+            "PearlSC",
+            "BagelSC",
+            "BoxSC",
+            "ClusterSC",
+            "CogSC",
+            "OmegaSC",
+            "PackedSC",
+            "ReachSC",
+            "AspidSC",
+            //end-spacecats
             //start-backmen
             "CentCommv2",
             "CentCommv3",
@@ -79,13 +94,12 @@ namespace Content.IntegrationTests.Tests
             "shwrDust",
             "BackmenTortuga",
             "BackmenHive",
-            "BackmenCogmap",
 			"BackmenShoukou",
 			"BackmenAspid",
 			"BackmenKettle",
 			"BackmenRook",
             "BargeVsShip",
-            "no_madDelta",
+            "BackmenDelta",
             //end-backmen
             "Cluster", 
             "Europa",
@@ -282,15 +296,21 @@ namespace Content.IntegrationTests.Tests
                             .Where(x=>x.Value[0] > 0 || x.Value[0] == -1)
                             .Select(x=>x.Key)
                         .Where(x=>x != "Prisoner") // backmen: Fugitive
-                        .Where(x=>x != "SAI") // backmen: SAI
                         .Where(x=>x != "Freelancer") // backmen: shipwrecked
                     );
 
                     var spawnPoints = entManager.EntityQuery<SpawnPointComponent>()
-                        .Where(x => x.SpawnType == SpawnPointType.Job)
-                        .Select(x => x.Job!.Value);
+                        .Where(x => x.SpawnType == SpawnPointType.Job && x.Job != null)
+                        .Select(x => x.Job.Value);
 
                     jobs.ExceptWith(spawnPoints);
+
+                    spawnPoints = entManager.EntityQuery<ContainerSpawnPointComponent>()
+                        .Where(x => x.SpawnType is SpawnPointType.Job or SpawnPointType.Unset && x.Job != null)
+                        .Select(x => x.Job.Value);
+
+                    jobs.ExceptWith(spawnPoints);
+
                     Assert.That(jobs, Is.Empty, $"There is no spawnpoints for {string.Join(", ", jobs)} on {mapProto}.");
                 }
 

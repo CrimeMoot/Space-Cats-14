@@ -44,7 +44,8 @@
     highPressureMultiplier: 0.02
     lowPressureMultiplier: 1000
   - type: TemperatureProtection
-    coefficient: 0.001
+    heatingCoefficient: 0.001
+    coolingCoefficient: 0.001
   - type: FireProtection
     reduction: 0.8
   - type: ExplosionResistance
@@ -180,17 +181,18 @@
   - type: Armor
     modifiers:
       coefficients:
-        Blunt: 0.6
-        Slash: 0.6
-        Piercing: 0.5
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.6
         Heat: 0.3
         Radiation: 0.1
   - type: ExplosionResistance
     damageCoefficient: 0.2
   - type: TemperatureProtection
-    coefficient: 0.001
+    heatingCoefficient: 0.001
+    coolingCoefficient: 0.001
   - type: ToggleableClothing
-    clothingPrototype: ClothingHeadHelmetHardsuitMaxim
+    clothingPrototype: ClothingHeadHelmetHardsuitMaxim  
 
 #Security Hardsuit
 - type: entity
@@ -526,7 +528,7 @@
     - MonkeyWearable
     - Hardsuit
     - WhitelistChameleon
-  - type: DNALocker
+  - type: DNALocker # Cats edit
 
 # Syndicate Medic Hardsuit
 - type: entity
@@ -545,7 +547,7 @@
     tags:
     - Hardsuit
     - WhitelistChameleon
-  - type: DNALocker
+  - type: DNALocker # Cats edit
 
 #Syndicate Elite Hardsuit
 - type: entity
@@ -562,7 +564,8 @@
     highPressureMultiplier: 0.02
     lowPressureMultiplier: 1000
   - type: TemperatureProtection
-    coefficient: 0.001
+    heatingCoefficient: 0.001
+    coolingCoefficient: 0.001
   - type: ExplosionResistance
     damageCoefficient: 0.2
   - type: FireProtection
@@ -581,11 +584,11 @@
     size: Huge
   - type: ClothingSpeedModifier
     walkModifier: 1.0
-    sprintModifier: 0.9
+    sprintModifier: 1.0  #backmen-speedoznik
+  - type: DNALocker # Cats edit
   - type: HeldSpeedModifier
   - type: ToggleableClothing
     clothingPrototype: ClothingHeadHelmetHardsuitSyndieElite
-  - type: DNALocker
 
 #Syndicate Commander Hardsuit
 - type: entity
@@ -619,7 +622,8 @@
   - type: HeldSpeedModifier
   - type: ToggleableClothing
     clothingPrototype: ClothingHeadHelmetHardsuitSyndieCommander
-  - type: DNALocker
+  - type: DNALocker # Cats edit
+
 
 #Cybersun Juggernaut Hardsuit
 - type: entity
@@ -653,7 +657,7 @@
   - type: HeldSpeedModifier
   - type: ToggleableClothing
     clothingPrototype: ClothingHeadHelmetHardsuitCybersun
-  - type: DNALocker
+  - type: DNALocker # Cats edit
 
 #Wizard Hardsuit
 - type: entity
@@ -789,7 +793,7 @@
 #CENTCOMM / ERT HARDSUITS
 #ERT Leader Hardsuit
 - type: entity
-  parent: ClothingOuterHardsuitSyndieCommander
+  parent: [ BaseCentcommContraband, ClothingOuterHardsuitSyndieCommander ]
   id: ClothingOuterHardsuitERTLeader
   name: ERT leader's hardsuit
   description: A protective hardsuit worn by the leader of an emergency response team.
@@ -800,10 +804,11 @@
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertleader.rsi
   - type: ToggleableClothing
     clothingPrototype: ClothingHeadHelmetHardsuitERTLeader
+  - type: DNALocker # Cats edit
 
 #ERT Chaplain Hardsuit
 - type: entity
-  parent: ClothingOuterHardsuitJuggernaut
+  parent: [ BaseCentcommContraband, ClothingOuterHardsuitJuggernaut ]
   id: ClothingOuterHardsuitERTChaplain
   name: ERT chaplain's hardsuit
   description: A protective hardsuit worn by the chaplains of an Emergency Response Team.
@@ -814,13 +819,14 @@
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertchaplain.rsi
   - type: ToggleableClothing
     clothingPrototype: ClothingHeadHelmetHardsuitERTChaplain
+  - type: DNALocker # Cats edit
 
 #ERT Engineer Hardsuit
 - type: entity
   parent: ClothingOuterHardsuitCBURN
   id: ClothingOuterHardsuitERTEngineer
   name: ERT engineer's hardsuit
-  noSpawn: true
+  categories: [ HideSpawnMenu ]
   description: A protective hardsuit worn by the engineers of an emergency response team.
   components:
   - type: Sprite
@@ -829,10 +835,11 @@
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertengineer.rsi
   - type: ToggleableClothing
     clothingPrototype: ClothingHeadHelmetHardsuitERTEngineer
+  - type: DNALocker # Cats edit
 
 #ERT Medic Hardsuit
 - type: entity
-  parent: ClothingOuterHardsuitSyndieMedic
+  parent: [ BaseCentcommContraband, ClothingOuterHardsuitSyndieMedic ]
   id: ClothingOuterHardsuitERTMedical
   name: ERT medic's hardsuit
   description: A protective hardsuit worn by the medics of an emergency response team.
@@ -843,10 +850,11 @@
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertmedical.rsi
   - type: ToggleableClothing
     clothingPrototype: ClothingHeadHelmetHardsuitERTMedical
+  - type: DNALocker # Cats edit
 
 #ERT Security Hardsuit
 - type: entity
-  parent: ClothingOuterHardsuitSyndie
+  parent: [ BaseCentcommContraband, ClothingOuterHardsuitSyndie ]
   id: ClothingOuterHardsuitERTSecurity
   name: ERT security's hardsuit
   description: A protective hardsuit worn by the security officers of an emergency response team.
@@ -857,10 +865,7 @@
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertsecurity.rsi
   - type: ToggleableClothing
     clothingPrototype: ClothingHeadHelmetHardsuitERTSecurity
-  - type: Tag
-    tags:
-    - Hardsuit
-    - WhitelistChameleon
+  - type: DNALocker # Cats edit
 
 #ERT Janitor Hardsuit
 - type: entity
@@ -875,10 +880,11 @@
     sprite: Clothing/OuterClothing/Hardsuits/ERTSuits/ertjanitor.rsi
   - type: ToggleableClothing
     clothingPrototype: ClothingHeadHelmetHardsuitERTJanitor
+  - type: DNALocker # Cats edit
 
 #Deathsquad
 - type: entity
-  parent: ClothingOuterHardsuitBase
+  parent: [ BaseCentcommContraband, ClothingOuterHardsuitBase ]
   id: ClothingOuterHardsuitDeathsquad
   name: death squad hardsuit
   description: An advanced hardsuit favored by commandos for use in special operations.
@@ -891,7 +897,8 @@
     highPressureMultiplier: 0.02
     lowPressureMultiplier: 1000
   - type: TemperatureProtection
-    coefficient: 0.001
+    heatingCoefficient: 0.001
+    coolingCoefficient: 0.001
   - type: ExplosionResistance
     damageCoefficient: 0.2
   - type: FireProtection
@@ -912,10 +919,13 @@
   - type: HeldSpeedModifier
   - type: ToggleableClothing
     clothingPrototype: ClothingHeadHelmetHardsuitDeathsquad
+  - type: DiseaseProtection #Backmen & Ataraxia anti viral
+    protection: 1
+  - type: DNALocker # Cats edit
 
 #CBURN Hardsuit
 - type: entity
-  parent: ClothingOuterHardsuitBase
+  parent: [ BaseCentcommContraband, ClothingOuterHardsuitBase ]
   id: ClothingOuterHardsuitCBURN
   name: CBURN exosuit
   description: A lightweight yet strong exosuit used for special cleanup operations.
@@ -928,7 +938,8 @@
     highPressureMultiplier: 0.02
     lowPressureMultiplier: 1000
   - type: TemperatureProtection
-    coefficient: 0.001
+    heatingCoefficient: 0.001
+    coolingCoefficient: 0.001
   - type: ExplosionResistance
     damageCoefficient: 0.7
   - type: Armor
@@ -949,6 +960,9 @@
   - type: HeldSpeedModifier
   - type: ToggleableClothing
     clothingPrototype: ClothingHeadHelmetCBURN
+  - type: DiseaseProtection #Backmen & Ataraxia anti viral
+    protection: 0.6
+  - type: DNALocker # Cats edit
 
 #MISC. HARDSUITS
 #Clown Hardsuit

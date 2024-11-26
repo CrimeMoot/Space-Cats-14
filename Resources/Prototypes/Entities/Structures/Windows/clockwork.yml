@@ -48,7 +48,7 @@
   - type: Appearance
   - type: DamageVisuals
     thresholds: [4, 8, 12]
-    damageDivisor: 4
+    damageDivisor: 3
     trackAllDamage: true
     damageOverlay:
       sprite: Structures/Windows/cracks.rsi
@@ -75,7 +75,7 @@
   - type: Appearance
   - type: DamageVisuals
     thresholds: [4, 8, 12]
-    damageDivisor: 10
+    damageDivisor: 1.5
     trackAllDamage: true
     damageOverlay:
       sprite: Structures/Windows/cracks_directional.rsi
@@ -85,7 +85,16 @@
     thresholds:
     - trigger:
         !type:DamageTrigger
-        damage: 150
+        damage: 75
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WindowShatter
+    - trigger:
+        !type:DamageTrigger
+        damage: 37
       behaviors:
       - !type:PlaySoundBehavior
         sound:

@@ -22,6 +22,15 @@ internal sealed class ChatManager : IChatManager
     }
 
     public event Action? PermissionsUpdated; // backmen: chat permissions
+    public void SendAdminAlert(string message)
+    {
+        // See server-side manager. This just exists for shared code.
+    }
+
+    public void SendAdminAlert(EntityUid player, string message)
+    {
+        // See server-side manager. This just exists for shared code.
+    }
 
     public void SendMessage(string text, ChatSelectChannel channel)
     {
@@ -70,7 +79,6 @@ internal sealed class ChatManager : IChatManager
                 break;
 
             // start-backmen: telepathic
-
             case ChatSelectChannel.Telepathic:
                 _consoleHost.ExecuteCommand($"tsay \"{CommandParsing.Escape(str)}\"");
                 break;
@@ -81,6 +89,7 @@ internal sealed class ChatManager : IChatManager
                 throw new ArgumentOutOfRangeException(nameof(channel), channel, null);
         }
     }
+    
     // start-backmen: telepathic
     public void UpdatePermissions()
     {

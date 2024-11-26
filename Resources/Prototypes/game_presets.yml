@@ -3,31 +3,31 @@
   alias:
     - survival
   name: survival-title
-  showInVote: true # secret
+  showInVote: false # secret
   description: survival-description
   rules:
-    - MeteorSwarmScheduler
+    #- MeteorSwarmScheduler
     - RampingStationEventScheduler
-#    - WageScheduler #backmen: currency
-    # - SpaceTrafficControlEventScheduler
-    # - SpaceTrafficControlEventScheduler
-    - BasicRoundstartVariation
+    - WageScheduler #backmen: currency
+#    - SpaceTrafficControlEventScheduler
+#    - SpaceTrafficControlFriendlyEventScheduler
+    # - BasicRoundstartVariation
 
 - type: gamePreset
   id: KesslerSyndrome
   alias:
-    - kessler
+    - Kessler
     - junk
     - meteorhell
   name: kessler-syndrome-title
   showInVote: false # secret
   description: kessler-syndrome-description
   rules:
-#    - WageScheduler #backmen: currency
-    - KesslerSyndromeScheduler
+    - WageScheduler #backmen: currency
+#    - KesslerSyndromeScheduler
     - RampingStationEventScheduler
-    # - SpaceTrafficControlEventScheduler
-    - BasicRoundstartVariation
+#    - SpaceTrafficControlEventScheduler
+    # - BasicRoundstartVariation
 
 - type: gamePreset
   id: AllAtOnce
@@ -37,20 +37,21 @@
   description: all-at-once-description
   showInVote: false
   rules:
-    - Nukeops
+    # start-backmen
+    - WageScheduler #backmen: currency
+    - VampiresGameRule # backmen: vampire
+    - FleshCult # backmen: flesh cult
+    - ExtendedThief # backmen: extended-thief
+    #- Changeling # backmen: changeling
+    # end-backmen
     - Traitor
     - Revolutionary
     - Zombie
-    - KesslerSyndromeScheduler
+#    - KesslerSyndromeScheduler
     - RampingStationEventScheduler
-#    - WageScheduler #backmen: currency
-    - BlobGameMode # backmen: blob
-    - VampiresGameRule # backmen: vampire
-    - FleshCult # backmen: flesh cult
-    #- Changeling # backmen: changeling
-    # - SpaceTrafficControlEventScheduler
-    - BasicRoundstartVariation
-    - MeteorSwarmScheduler
+#    - SpaceTrafficControlEventScheduler
+    # - BasicRoundstartVariation
+    #- MeteorSwarmScheduler
 
 - type: gamePreset
   id: AllerAtOnce
@@ -60,22 +61,29 @@
   - badidea
   - punishment
   name: aller-at-once-title
-  description: all-at-once-description
+  description: aller-at-once-description
   showInVote: false #Please god dont do this
   rules:
-#    - WageScheduler #backmen: currency
+    # start-backmen
+    - WageScheduler #backmen: currency
+    - BlobGameMode
+    - VampiresGameRule
+    - FleshCult
+    - ExtendedThief
+    - Changeling
+    # end-backmen
     - Nukeops
     - Traitor
     - Revolutionary
     - Zombie
     - BasicStationEventScheduler
-    - KesslerSyndromeScheduler
-    - MeteorSwarmMildScheduler
-    - MeteorSwarmScheduler
+  #  - KesslerSyndromeScheduler
+  #  - MeteorSwarmMildScheduler
+  #  #- MeteorSwarmScheduler
     - RampingStationEventScheduler
-    # - SpaceTrafficControlEventScheduler
-    # - SpaceTrafficControlEventScheduler
-    - BasicRoundstartVariation
+#    - SpaceTrafficControlEventScheduler
+#    - SpaceTrafficControlFriendlyEventScheduler
+    # - BasicRoundstartVariation
 
 - type: gamePreset
   id: Extended
@@ -87,10 +95,10 @@
   description: extended-description
   rules:
   - BasicStationEventScheduler
-#  - WageScheduler #backmen: currency
-  - MeteorSwarmScheduler
-  # - SpaceTrafficControlEventScheduler
-  - BasicRoundstartVariation
+  - WageScheduler #backmen: currency
+#  - MeteorSwarmScheduler
+#  - SpaceTrafficControlEventScheduler
+  # - BasicRoundstartVariation
 
 - type: gamePreset
   id: Greenshift
@@ -98,12 +106,12 @@
   - greenshift
   - shittersafarideluxeedition
   name: greenshift-title
-  showInVote: true #4boring4vote
+  showInVote: false #4boring4vote
   description: greenshift-description
   rules:
-  # - SpaceTrafficControlEventScheduler
-  - BasicRoundstartVariation
-#  - WageScheduler #backmen: currency
+#  - SpaceTrafficControlFriendlyEventScheduler
+  # - BasicRoundstartVariation
+  - WageScheduler #backmen: currency
 
 - type: gamePreset
   id: Secret
@@ -125,10 +133,10 @@
   description: secret-description
   rules:
     - BasicStationEventScheduler
-#   - WageScheduler #backmen: currency
-    - MeteorSwarmScheduler
-    # - SpaceTrafficControlEventScheduler
-    - BasicRoundstartVariation
+    - WageScheduler #backmen: currency
+#    - MeteorSwarmScheduler
+#    - SpaceTrafficControlEventScheduler
+    # - BasicRoundstartVariation
 
 - type: gamePreset
   id: SecretGreenshift #For Admin Use: Runs Greenshift but shows "Secret" in lobby.
@@ -138,18 +146,18 @@
   showInVote: false #Admin Use
   description: secret-description
   rules:
-# - WageScheduler #backmen: currency
-  # - SpaceTrafficControlEventScheduler
-  - BasicRoundstartVariation
+  - WageScheduler #backmen: currency
+#  - SpaceTrafficControlFriendlyEventScheduler
+  # - BasicRoundstartVariation
 
 - type: gamePreset
   id: Sandbox
   alias:
     - sandbox
   name: sandbox-title
-  description: sandbox-description
-  showInVote: true # Not suitable for use without admin intervention, since entity spamming can quickly crash a server
+  showInVote: true # secret
   maxPlayers: 5
+  description: sandbox-description
   rules:
     - Sandbox
 
@@ -160,16 +168,16 @@
     - tator
   name: traitor-title
   description: traitor-description
-  showInVote: true
+  showInVote: false
   minPlayers: 6
   rules:
     - Traitor
     - SubGamemodesRule
     - BasicStationEventScheduler
-#   - WageScheduler #backmen: currency
-    - MeteorSwarmScheduler
-    # - SpaceTrafficControlEventScheduler
-    - BasicRoundstartVariation
+    - WageScheduler #backmen: currency
+#    - MeteorSwarmScheduler
+#    - SpaceTrafficControlEventScheduler
+    # - BasicRoundstartVariation
 
 - type: gamePreset
   id: Deathmatch
@@ -191,16 +199,16 @@
     - nukeops
   name: nukeops-title
   description: nukeops-description
-  showInVote: true
+  showInVote: false
   minPlayers: 15
   rules:
     - Nukeops
     - SubGamemodesRule
     - BasicStationEventScheduler
-#   - WageScheduler #backmen: currency
-    - MeteorSwarmScheduler
-    # - SpaceTrafficControlEventScheduler
-    - BasicRoundstartVariation
+    - WageScheduler #backmen: currency
+#    - CalmMeteorSwarmScheduler #backmen: calm-scheduler
+#    - SpaceTrafficControlEventScheduler
+    # - BasicRoundstartVariation
 
 - type: gamePreset
   id: Revolutionary
@@ -210,16 +218,16 @@
     - revolutionaries
   name: rev-title
   description: rev-description
-  showInVote: true
+  showInVote: false
   minPlayers: 10
   rules:
     - Revolutionary
     - SubGamemodesRule
     - BasicStationEventScheduler
-    - MeteorSwarmScheduler
-    # - SpaceTrafficControlEventScheduler
-    - BasicRoundstartVariation
- #  - WageScheduler #backmen: currency
+#    - MeteorSwarmScheduler
+#    - SpaceTrafficControlEventScheduler
+    # - BasicRoundstartVariation
+    - WageScheduler #backmen: currency
 
 - type: gamePreset
   id: Zombie
@@ -231,15 +239,15 @@
   - zomber
   name: zombie-title
   description: zombie-description
-  showInVote: true
+  showInVote: false
   minPlayers: 10
   rules:
   - Zombie
   - BasicStationEventScheduler
-# - WageScheduler #backmen: currency
-  - MeteorSwarmScheduler
-  # - SpaceTrafficControlEventScheduler
-  - BasicRoundstartVariation
+  - WageScheduler #backmen: currency
+#  - MeteorSwarmScheduler
+#  - SpaceTrafficControlEventScheduler
+  # - BasicRoundstartVariation
 
 - type: gamePreset
   id: Zombieteors
@@ -251,11 +259,9 @@
   description: zombieteors-description
   showInVote: false
   rules:
-# - WageScheduler #backmen: currency
+  - WageScheduler #backmen: currency
   - Zombie
   - BasicStationEventScheduler
-  - KesslerSyndromeScheduler
-  # - SpaceTrafficControlEventScheduler
-  - BasicRoundstartVariation
-
-
+#  - KesslerSyndromeScheduler
+#  - SpaceTrafficControlEventScheduler
+  # - BasicRoundstartVariation

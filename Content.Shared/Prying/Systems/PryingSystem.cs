@@ -134,6 +134,8 @@ public sealed class PryingSystem : EntitySystem
         var modEv = new GetPryTimeModifierEvent(user);
 
         RaiseLocalEvent(target, ref modEv);
+
+        // BACKMEN EDIT START
         var doAfterArgs = new DoAfterArgs(EntityManager, user, TimeSpan.FromSeconds(modEv.BaseTime * modEv.PryTimeModifier / toolModifier), new DoorPryDoAfterEvent(), target, target, tool)
         {
             BreakOnDamage = true,
@@ -167,6 +169,7 @@ public sealed class PryingSystem : EntitySystem
                 _popup.PopupClient(Loc.GetString(message), uid, args.User);
             return;
         }
+
 
         if (args.Used != null && comp != null)
         {

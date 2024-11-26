@@ -12,10 +12,6 @@ namespace Content.Server.Administration.Managers;
 public interface IBanManager
 {
     public void Initialize();
-
-    // Define the event
-    event EventHandler<BanEventArgs.ServerBanEventArgs>? ServerBanCreated;
-    
     public void Restart();
 
     /// <summary>
@@ -28,7 +24,7 @@ public interface IBanManager
     /// <param name="minutes">Number of minutes to ban for. 0 and null mean permanent</param>
     /// <param name="severity">Severity of the resulting ban note</param>
     /// <param name="reason">Reason for the ban</param>
-    public void CreateServerBan(NetUserId? target, string? targetUsername, NetUserId? banningAdmin, (IPAddress, int)? addressRange, ImmutableArray<byte>? hwid, uint? minutes, NoteSeverity severity, string reason);
+    public void CreateServerBan(NetUserId? target, string? targetUsername, NetUserId? banningAdmin, (IPAddress, int)? addressRange, ImmutableTypedHwid? hwid, uint? minutes, NoteSeverity severity, string reason);
     public HashSet<string>? GetRoleBans(NetUserId playerUserId);
     public HashSet<ProtoId<JobPrototype>>? GetJobBans(NetUserId playerUserId);
 
@@ -41,7 +37,18 @@ public interface IBanManager
     /// <param name="reason">Reason for the ban</param>
     /// <param name="minutes">Number of minutes to ban for. 0 and null mean permanent</param>
     /// <param name="timeOfBan">Time when the ban was applied, used for grouping role bans</param>
-    public void CreateRoleBan(NetUserId? target, string? targetUsername, NetUserId? banningAdmin, (IPAddress, int)? addressRange, ImmutableArray<byte>? hwid, string role, uint? minutes, NoteSeverity severity, string reason, DateTimeOffset timeOfBan);
+    public void CreateRoleBan(NetUserId? target, string? targetUsername, NetUserId? banningAdmin, (IPAddress, int)? addressRange, ImmutableTypedHwid? hwid, string role, uint? minutes, NoteSeverity severity, string reason, DateTimeOffset timeOfBan);
+
+    /// <summary>
+    /// Creates a antag ban for the specified target, username or GUID
+    /// </summary>
+    /// <param name="target">Target user, username or GUID, null for none</param>
+    /// <param name="role">Antag to be banned from</param>
+    /// <param name="severity">Severity of the resulting ban note</param>
+    /// <param name="reason">Reason for the ban</param>
+    /// <param name="minutes">Number of minutes to ban for. 0 and null mean permanent</param>
+    /// <param name="timeOfBan">Time when the ban was applied, used for grouping role bans</param>
+    public void CreateAntagban(NetUserId? target, string? targetUsername, NetUserId? banningAdmin, (IPAddress, int)? addressRange, ImmutableTypedHwid? hwid, string role, uint? minutes, NoteSeverity severity, string reason, DateTimeOffset timeOfBan);
 
     /// <summary>
     /// Pardons a role ban for the specified target, username or GUID
@@ -54,12 +61,7 @@ public interface IBanManager
     /// <summary>
     /// Sends role bans to the target
     /// </summary>
-    /// <param name="pSession">Player's user ID</param>
-    public void SendRoleBans(NetUserId userId);
-
-    /// <summary>
-    /// Sends role bans to the target
-    /// </summary>
     /// <param name="pSession">Player's session</param>
     public void SendRoleBans(ICommonSession pSession);
 }
+

@@ -6,6 +6,7 @@ using Content.Server.Ghost.Roles.Events;
 using Content.Shared.Ghost.Roles.Raffles;
 using Content.Server.Ghost.Roles.UI;
 using Content.Server.Mind.Commands;
+using Content.Server.Players.JobWhitelist;
 using Content.Shared.Administration;
 using Content.Shared.CCVar;
 using Content.Shared.Database;
@@ -33,6 +34,7 @@ using Content.Server.Popups;
 using Content.Shared.Verbs;
 using Robust.Shared.Collections;
 using Content.Shared.Ghost.Roles.Components;
+using Content.Shared.Roles.Jobs;
 
 namespace Content.Server.Ghost.Roles;
 
@@ -53,6 +55,8 @@ public sealed class GhostRoleSystem : EntitySystem
     [Dependency] private readonly IPrototypeManager _prototype = default!;
 
     [Dependency] private readonly Backmen.RoleWhitelist.WhitelistSystem _roleWhitelist = default!; // backmen: whitelist
+    [Dependency] private readonly JobWhitelistManager _wlRole = default!; // backmen: whitelist
+    [Dependency] private readonly Content.Corvax.Interfaces.Server.IServerDiscordAuthManager _discordAuthManager = default!; // backmen: whitelist
 
     private uint _nextRoleIdentifier;
     private bool _needsUpdateGhostRoleCount = true;
@@ -72,18 +76,22 @@ public sealed class GhostRoleSystem : EntitySystem
 
         SubscribeLocalEvent<RoundRestartCleanupEvent>(Reset);
         SubscribeLocalEvent<PlayerAttachedEvent>(OnPlayerAttached);
+
         SubscribeLocalEvent<GhostTakeoverAvailableComponent, MindAddedMessage>(OnMindAdded);
         SubscribeLocalEvent<GhostTakeoverAvailableComponent, MindRemovedMessage>(OnMindRemoved);
         SubscribeLocalEvent<GhostTakeoverAvailableComponent, MobStateChangedEvent>(OnMobStateChanged);
+        SubscribeLocalEvent<GhostTakeoverAvailableComponent, TakeGhostRoleEvent>(OnTakeoverTakeRole);
+
         SubscribeLocalEvent<GhostRoleComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<GhostRoleComponent, ComponentStartup>(OnRoleStartup);
         SubscribeLocalEvent<GhostRoleComponent, ComponentShutdown>(OnRoleShutdown);
         SubscribeLocalEvent<GhostRoleComponent, EntityPausedEvent>(OnPaused);
         SubscribeLocalEvent<GhostRoleComponent, EntityUnpausedEvent>(OnUnpaused);
+
         SubscribeLocalEvent<GhostRoleRaffleComponent, ComponentInit>(OnRaffleInit);
         SubscribeLocalEvent<GhostRoleRaffleComponent, ComponentShutdown>(OnRaffleShutdown);
+
         SubscribeLocalEvent<GhostRoleMobSpawnerComponent, TakeGhostRoleEvent>(OnSpawnerTakeRole);
-        SubscribeLocalEvent<GhostTakeoverAvailableComponent, TakeGhostRoleEvent>(OnTakeoverTakeRole);
         SubscribeLocalEvent<GhostRoleMobSpawnerComponent, GetVerbsEvent<Verb>>(OnVerb);
         SubscribeLocalEvent<GhostRoleMobSpawnerComponent, GhostRoleRadioMessage>(OnGhostRoleRadioMessage);
         _playerManager.PlayerStatusChanged += PlayerStatusChanged;
@@ -515,7 +523,11 @@ public sealed class GhostRoleSystem : EntitySystem
 
         var newMind = _mindSystem.CreateMind(player.UserId,
             EntityManager.GetComponent<MetaDataComponent>(mob).EntityName);
-        _roleSystem.MindAddRole(newMind, new GhostRoleMarkerRoleComponent { Name = role.RoleName });
+
+        _roleSystem.MindAddRole(newMind, "MindRoleGhostMarker");
+
+        if(_roleSystem.MindHasRole<GhostRoleMarkerRoleComponent>(newMind!, out var markerRole))
+            markerRole.Value.Comp2.Name = role.RoleName;
 
         _mindSystem.SetUserId(newMind, player.UserId);
         _mindSystem.TransferTo(newMind, mob);
@@ -569,6 +581,27 @@ public sealed class GhostRoleSystem : EntitySystem
                 ? _timing.CurTime.Add(raffle.Countdown)
                 : TimeSpan.MinValue;
 
+            // start-backmen: whitelist
+            var whitelistRequired = false;
+            var discordRequired = false;
+            if (_prototype.TryIndex(role.JobProto, out var job) && player != null)
+            {
+                if (role.WhitelistRequired && !_roleWhitelist.IsInWhitelist(player))
+                {
+                    whitelistRequired = true;
+                }
+                else if (!_wlRole.IsAllowed(player, job))
+                {
+                    whitelistRequired = true;
+                }
+
+                if (_discordAuthManager.IsEnabled && job.DiscordRequired && !_discordAuthManager.IsCached(player))
+                {
+                    discordRequired = true;
+                }
+            }
+            // end-backmen: whitelist
+
             roles.Add(new GhostRoleInfo
             {
                 Identifier = id,
@@ -579,7 +612,8 @@ public sealed class GhostRoleSystem : EntitySystem
                 Kind = kind,
                 RafflePlayerCount = rafflePlayerCount,
                 RaffleEndTime = raffleEndTime,
-                WhitelistRequired = role.WhitelistRequired // backmen: whitelist
+                WhitelistRequired = whitelistRequired, // backmen: whitelist
+                DiscordRequired = discordRequired, // backmen: whitelist
             });
         }
 
@@ -606,6 +640,11 @@ public sealed class GhostRoleSystem : EntitySystem
     {
         if (!TryComp(uid, out GhostRoleComponent? ghostRole))
             return;
+
+        if (ghostRole.JobProto != null)
+        {
+            _roleSystem.MindAddJobRole(args.Mind, args.Mind, silent:false,ghostRole.JobProto);
+        }
 
         ghostRole.Taken = true;
         UnregisterGhostRole((uid, ghostRole));

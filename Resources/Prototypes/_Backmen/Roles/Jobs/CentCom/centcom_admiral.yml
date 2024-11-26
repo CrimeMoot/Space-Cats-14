@@ -12,6 +12,7 @@
   requireAdminNotify: true
   joinNotifyCrew: true
   whitelisted: true
+  discordRequired: false
   requirements:
     - !type:RoleTimeRequirement
       role: JobCentralCommandOperator
@@ -25,6 +26,8 @@
       department: CentCom
 #      time: 31600
       time: 9000   #cats
+    - !type:AgeRequirement
+      requiredAge: 21 # cats
   accessGroups:
     - AllAccess
     - CentCom

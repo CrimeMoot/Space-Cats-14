@@ -11,9 +11,8 @@ using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Network;
-using Robust.Shared.Utility;
-using Robust.Shared.Timing;
 using Robust.Shared.Configuration;
+using Robust.Shared.Utility;
 
 namespace Content.Client.Administration.UI.Bwoink
 {
@@ -77,6 +76,11 @@ namespace Content.Client.Administration.UI.Bwoink
 
                 if (info.OverallPlaytime <= TimeSpan.FromMinutes(_cfg.GetCVar(CCVars.NewPlayerThreshold)))
                     sb.Append(new Rune(0x23F2)); // ⏲
+
+                // start-backmen: gpt
+                if(info.AutoGpt)
+                    sb.Append(new Rune(0x2607)); // ☇
+                // end-backmen: gpt
 
                 sb.AppendFormat("\"{0}\"", text);
 
@@ -153,6 +157,13 @@ namespace Content.Client.Administration.UI.Bwoink
             };
 
             // start-backmen: gpt
+            GptChatToggle.OnPressed += _ =>
+            {
+                if (_currentPlayer is not null)
+                    _console.ExecuteCommand($"ahelp_gpt_toggle \"{_currentPlayer.Username}\"");
+
+                GptChatToggle.Pressed = !GptChatToggle.Pressed;
+            };
             GptChat.OnPressed += _ =>
             {
                 if (_currentPlayer is not null)
@@ -226,6 +237,9 @@ namespace Content.Client.Administration.UI.Bwoink
             // start-backmen: gpt
             GptChat.Visible = _adminManager.CanCommand("ahelp_gpt");
             GptChat.Disabled = !GptChat.Visible || disabled;
+            GptChatToggle.Visible = _adminManager.CanCommand("ahelp_gpt_toggle");
+            GptChatToggle.Disabled = !GptChatToggle.Visible || disabled;
+            GptChatToggle.Pressed = _currentPlayer?.AutoGpt ?? false;
             // end-backmen: gpt
 
             Bans.Visible = _adminManager.HasFlag(AdminFlags.Ban);

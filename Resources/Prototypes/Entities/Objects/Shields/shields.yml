@@ -59,6 +59,7 @@
                   max: 2
     - type: StaticPrice
       price: 100
+    - type: MeleeBlock # CATS EDIT
 
 #Security Shields
 
@@ -416,6 +417,7 @@
       radius: 1.5
       energy: 2
       color: blue
+    - type: ItemTogglePointLight
     - type: Reflect
       reflectProb: 0.95
       reflects:
@@ -463,14 +465,15 @@
                   max: 1
     - type: StaticPrice
       price: 350
+    - type: MeleeBlock # CATS EDIT
 # Corvax-HiddenDesc-Start
     - type: HiddenDescription
       entries:
       - label: corvax-hidden-desc-EnergyShield-syndicate
         whitelistMind:
-          components:
-            - TraitorRole
-            - NukeOperative
+          mindRoles:
+          - TraitorRole
+          - NukeopsRole
       - label: corvax-hidden-desc-EnergyShield-security
         jobRequired:
           - HeadOfSecurity
@@ -502,9 +505,9 @@
       entries:
       - label: corvax-hidden-desc-EnergyShield-syndicate
         whitelistMind:
-          components:
-            - TraitorRole
-            - NukeOperative
+          mindRoles:
+          - TraitorRole
+          - NukeopsRole
       - label: corvax-hidden-desc-EnergyShield-security
         jobRequired:
           - HeadOfSecurity

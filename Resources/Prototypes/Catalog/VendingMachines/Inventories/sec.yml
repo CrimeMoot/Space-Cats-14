@@ -3,6 +3,7 @@
   startingInventory:
     SecurityWhistle: 5
     Handcuffs: 8
+    Purplecuffs: 1 # Backmen
     GrenadeFlashBang: 4
     TearGasGrenade: 4
     ClusterBangFull: 2
@@ -14,6 +15,7 @@
     ClothingEyesHudSecurity: 2
     ClothingEyesEyepatchHudSecurity: 2
     ClothingBeltSecurityWebbing: 5
+    ClothingMaskGasSecurity: 2  #<--Space Cat's
     CombatKnife: 3
     Zipties: 12
     RiotShield: 2

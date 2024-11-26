@@ -66,6 +66,7 @@ public sealed class DoAfterCancellationTests : InteractionTest
     {
         await SetTile(Floor);
         await InteractUsing(Pry, awaitDoAfters: false);
+
         await CancelDoAfters();
         await AssertTile(Floor);
 
@@ -79,6 +80,7 @@ public sealed class DoAfterCancellationTests : InteractionTest
         await SetTile(Floor);
         await InteractUsing(Pry, awaitDoAfters: false);
         await RunTicks(1);
+
         Assert.That(ActiveDoAfters.Count(), Is.EqualTo(1));
         await AssertTile(Floor);
 
