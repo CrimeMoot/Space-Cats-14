@@ -49,8 +49,8 @@ public sealed class BluespaceHarvesterSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<BluespaceHarvesterComponent, BluespaceHarvesterTargetLevelMessage>(OnTargetLevel);
-        SubscribeLocalEvent<BluespaceHarvesterComponent, BluespaceHarvesterBuyMessage>(OnBuy);
+        SubscribeLocalEvent<BluespaceHarvesterComponent, BluespaceHarvesterTargetLevelMessage, ServerBoundUserInterfaceMessage>(OnTargetLevel);
+        SubscribeLocalEvent<BluespaceHarvesterComponent, BluespaceHarvesterBuyMessage, ServerBoundUserInterfaceMessage>(OnBuy);
         SubscribeLocalEvent<BluespaceHarvesterComponent, DestructionEventArgs>(OnDestruction);
     }
 
@@ -131,7 +131,7 @@ public sealed class BluespaceHarvesterSystem : EntitySystem
         SpawnRifts(ent);
     }
 
-    private void OnTargetLevel(Entity<BluespaceHarvesterComponent> ent, ref BluespaceHarvesterTargetLevelMessage args)
+    private void OnTargetLevel(EntityUid uid, BluespaceHarvesterComponent component, BluespaceHarvesterTargetLevelMessage msg, ServerBoundUserInterfaceMessage args)
     {
         var user = args.Session.AttachedEntity;
         if (!Exists(user))
@@ -159,7 +159,7 @@ public sealed class BluespaceHarvesterSystem : EntitySystem
         _adminLogger.Add(LogType.Action, LogImpact.High, $"{ToPrettyString(user.Value):player} set the level MORE stable in {ToPrettyString(ent)} to {args.TargetLevel}");
     }
 
-    private void OnBuy(Entity<BluespaceHarvesterComponent> ent, ref BluespaceHarvesterBuyMessage args)
+    private void OnBuy(EntityUid uid, BluespaceHarvesterComponent component, BluespaceHarvesterBuyMessage msg, ServerBoundUserInterfaceMessage args)
     {
         var user = args.Session.AttachedEntity;
         if (!Exists(user))
