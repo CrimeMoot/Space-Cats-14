@@ -64,7 +64,7 @@ public abstract partial class SharedMechSystem : EntitySystem   // ADT - partial
         SubscribeLocalEvent<MechComponent, MechGrabberEjectMessage>(ReceiveEquipmentUiMesssages);
         SubscribeLocalEvent<MechComponent, MechSoundboardPlayMessage>(ReceiveEquipmentUiMesssages);
 
-        Initialize();
+        InitializeADT();
         // ADT Mech end
     }
 

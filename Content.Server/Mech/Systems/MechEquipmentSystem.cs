@@ -22,7 +22,7 @@ public sealed class MechEquipmentSystem : SharedMechEquipmentSystem // ADT - Par
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
 
     /// <inheritdoc/>
-    public override void Initialize()
+    public override void InitializeADT()
     {
         base.Initialize();  // ADT fix I guess?
 

@@ -9,7 +9,7 @@ namespace Content.Shared.Mech.EntitySystems;
 /// </summary>
 public abstract partial class SharedMechSystem
 {
-    private void Initialize()
+    private void InitializeADT()
     {
         SubscribeLocalEvent<MechComponent, MechGunReloadMessage>(ReceiveEquipmentUiMesssages);
         SubscribeLocalEvent<MechComponent, StorageInteractAttemptEvent>(OnStorageInteract);
