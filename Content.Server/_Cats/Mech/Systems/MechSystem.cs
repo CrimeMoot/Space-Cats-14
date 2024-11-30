@@ -12,7 +12,7 @@ namespace Content.Server.Mech.Systems;
 /// <inheritdoc/>
 public sealed partial class MechSystem : SharedMechSystem
 {
-    private void InitializeADT()
+    private void Initialize()
     {
         SubscribeLocalEvent<MechComponent, EmpPulseEvent>(OnEmpPulse);
         SubscribeLocalEvent<MechComponent, DamageModifyEvent>(OnDamageModify);

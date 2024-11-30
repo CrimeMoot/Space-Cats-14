@@ -82,7 +82,7 @@ public sealed partial class MechSystem : SharedMechSystem
     //    SubscribeLocalEvent<MechComponent, MechSoundboardPlayMessage>(ReceiveEquipmentUiMesssages); // Cats commit
         #endregion
 
-        InitializeADT();    // Cats tweak
+        Initialize();    // Cats tweak
     }
 
     private void OnMechCanMoveEvent(EntityUid uid, MechComponent component, UpdateCanMoveEvent args)
