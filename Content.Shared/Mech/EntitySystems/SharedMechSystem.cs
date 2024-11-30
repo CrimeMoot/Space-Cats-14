@@ -28,7 +28,7 @@ namespace Content.Shared.Mech.EntitySystems;
 /// <summary>
 /// Handles all of the interactions, UI handling, and items shennanigans for <see cref="MechComponent"/>
 /// </summary>
-public abstract partial class SharedMechSystem : EntitySystem   // Cats - partial
+public abstract partial class SharedMechSystem : EntitySystem   // ADT - partial
 {
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
@@ -45,7 +45,7 @@ public abstract partial class SharedMechSystem : EntitySystem   // Cats - partia
     /// <inheritdoc/>
     public override void Initialize()
     {
-    //    SubscribeLocalEvent<MechComponent, MechToggleEquipmentEvent>(OnToggleEquipmentAction); // Cats commit
+        // SubscribeLocalEvent<MechComponent, MechToggleEquipmentEvent>(OnToggleEquipmentAction);// ADT Commented
         SubscribeLocalEvent<MechComponent, MechEjectPilotEvent>(OnEjectPilotEvent);
         SubscribeLocalEvent<MechComponent, UserActivateInWorldEvent>(RelayInteractionEvent);
         SubscribeLocalEvent<MechComponent, ComponentStartup>(OnStartup);
@@ -58,18 +58,17 @@ public abstract partial class SharedMechSystem : EntitySystem   // Cats - partia
         SubscribeLocalEvent<MechPilotComponent, CanAttackFromContainerEvent>(OnCanAttackFromContainer);
         SubscribeLocalEvent<MechPilotComponent, AttackAttemptEvent>(OnAttackAttempt);
 
-        // Cats Mech start
+        // ADT Mech start
         SubscribeNetworkEvent<SelectMechEquipmentEvent>(OnMechEquipSelected);
 
         SubscribeLocalEvent<MechComponent, MechGrabberEjectMessage>(ReceiveEquipmentUiMesssages);
         SubscribeLocalEvent<MechComponent, MechSoundboardPlayMessage>(ReceiveEquipmentUiMesssages);
 
         InitializeADT();
-        // Cats Mech end
-
+        // ADT Mech end
     }
 
-    // Cats Commented
+    // ADT Commented
     // private void OnToggleEquipmentAction(EntityUid uid, MechComponent component, MechToggleEquipmentEvent args)
     // {
     //     if (args.Handled)
@@ -145,13 +144,13 @@ public abstract partial class SharedMechSystem : EntitySystem   // Cats - partia
         _actions.AddAction(pilot, ref component.MechCycleActionEntity, component.MechCycleAction, mech);
         _actions.AddAction(pilot, ref component.MechUiActionEntity, component.MechUiAction, mech);
         _actions.AddAction(pilot, ref component.MechEjectActionEntity, component.MechEjectAction, mech);
-        // Cats Content start
+        // ADT Content start
         _actions.AddAction(pilot, ref component.MechInhaleActionEntity, component.MechInhaleAction, mech);
         _actions.AddAction(pilot, ref component.MechTurnLightsActionEntity, component.MechTurnLightsAction, mech);
 
         var ev = new SetupMechUserEvent(pilot);
         RaiseLocalEvent(mech, ref ev);
-        // Cats Content end
+        // ADT Content end
     }
 
     private void RemoveUser(EntityUid mech, EntityUid pilot)
@@ -208,7 +207,7 @@ public abstract partial class SharedMechSystem : EntitySystem   // Cats - partia
         component.CurrentSelectedEquipment = equipmentIndex >= allEquipment.Count
             ? null
             : allEquipment[equipmentIndex];
-        // Cats Content start
+        // ADT Content start
         while (TryComp<MechEquipmentComponent>(component.CurrentSelectedEquipment, out var equipment) && equipment.CanBeUsed == false)
         {
             equipmentIndex++;
@@ -216,8 +215,7 @@ public abstract partial class SharedMechSystem : EntitySystem   // Cats - partia
                 ? null
                 : allEquipment[equipmentIndex];
         }
-        // Cats Content end
-
+        // ADT Content end
         var popupString = component.CurrentSelectedEquipment != null
             ? Loc.GetString("mech-equipment-select-popup", ("item", component.CurrentSelectedEquipment))
             : Loc.GetString("mech-equipment-select-none-popup");
@@ -305,7 +303,7 @@ public abstract partial class SharedMechSystem : EntitySystem   // Cats - partia
         if (!Resolve(uid, ref component))
             return false;
 
-        // if (component.Energy + delta < 0)    // Cats Commented
+        // if (component.Energy + delta < 0)    // ADT Commented
         //     return false;                    // Почему тут стоит эта проверка, если используется Math.Clamp()?
 
         component.Energy = FixedPoint2.Clamp(component.Energy + delta, 0, component.MaxEnergy);
@@ -419,7 +417,7 @@ public abstract partial class SharedMechSystem : EntitySystem   // Cats - partia
         RemoveUser(uid, pilot);
         _container.RemoveEntity(uid, pilot);
         UpdateAppearance(uid, component);
-        // Cats Content start
+        // ADT Content start
         if (_net.IsClient && _timing.IsFirstTimePredicted)
         {
             var ev = new CloseMechMenuEvent();
@@ -430,7 +428,7 @@ public abstract partial class SharedMechSystem : EntitySystem   // Cats - partia
         {
             RemComp<ShowHealthBarsComponent>(pilot);
         }
-        // Cats Content end
+        // ADT Content end
         return true;
     }
 
