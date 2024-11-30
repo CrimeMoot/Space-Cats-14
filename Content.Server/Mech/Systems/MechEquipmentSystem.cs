@@ -4,6 +4,7 @@ using Content.Shared._Cats.Mech.EntitySystems;
 using Content.Shared._Cats.Weapons.Ranged.Components;
 using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
+using Content.Shared.Mech;
 using Content.Shared.Mech.Components;
 using Content.Shared.Mech.Equipment.Components;
 using Content.Shared.Whitelist;
@@ -13,7 +14,7 @@ namespace Content.Server.Mech.Systems;
 /// <summary>
 /// Handles the insertion of mech equipment into mechs.
 /// </summary>
-public sealed class MechEquipmentSystem : SharedMechEquipmentSystem // Cats - Parent changed
+public sealed class MechEquipmentSystem : SharedMechEquipmentSystem // ADT - Parent changed
 {
     [Dependency] private readonly MechSystem _mech = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
@@ -23,15 +24,15 @@ public sealed class MechEquipmentSystem : SharedMechEquipmentSystem // Cats - Pa
     /// <inheritdoc/>
     public override void Initialize()
     {
-        base.Initialize();  // Cats fix I guess?
+        base.Initialize();  // ADT fix I guess?
 
         SubscribeLocalEvent<MechEquipmentComponent, AfterInteractEvent>(OnUsed);
         SubscribeLocalEvent<MechEquipmentComponent, InsertEquipmentEvent>(OnInsertEquipment);
 
-        // Cats Content start
+        // ADT Content start
         SubscribeLocalEvent<MechEquipmentComponent, EntityTerminatingEvent>(OnTerminating);
         SubscribeLocalEvent<MechEquipmentComponent, MechEquipmentUiStateReadyEvent>(OnGetUIState);
-        // Cats Content end
+        // ADT Content end
     }
 
     private void OnUsed(EntityUid uid, MechEquipmentComponent component, AfterInteractEvent args)
@@ -76,7 +77,7 @@ public sealed class MechEquipmentSystem : SharedMechEquipmentSystem // Cats - Pa
         args.Handled = true;
     }
 
-    // Cats Content start
+    // ADT Content start
     private void OnTerminating(EntityUid uid, MechEquipmentComponent comp, ref EntityTerminatingEvent args)
     {
         _mech.UpdateUserInterfaceByEquipment(uid);
@@ -91,5 +92,5 @@ public sealed class MechEquipmentSystem : SharedMechEquipmentSystem // Cats - Pa
 
         args.States.Add(GetNetEntity(uid), null);
     }
-    // Cats Content end
+    // ADT Content end
 }
