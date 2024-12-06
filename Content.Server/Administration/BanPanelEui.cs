@@ -1,15 +1,15 @@
-using System.Collections.Immutable; // Cats ban
-using System.Linq; // Cats ban
-using System.Net; // Cats ban
+using System.Collections.Immutable;
+using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using Content.Server.Administration.Managers;
 using Content.Server.Administration.Systems;
-using Content.Server.Cats.Discord; // Cats ban 
-using Content.Server.Cats.Discord.Bans; // Cats ban
-using Content.Server.Cats.Discord.Bans.PayloadGener ators; // Cats ban
+using Content.Server.ADT.Discord;
+using Content.Server.ADT.Discord.Bans;
+using Content.Server.ADT.Discord.Bans.PayloadGenerators;
 using Content.Server.Chat.Managers;
-using Content.Server.Database; // Cats ban
+using Content.Server.Database;
 using Content.Server.EUI;
 using Content.Shared.Administration;
 using Content.Shared.Database;
