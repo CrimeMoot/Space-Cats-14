@@ -1,6 +1,10 @@
 ﻿using System.Linq;
 using System.Text;
 using Content.Server.Administration.Managers;
+using Content.Server.Cats.Discord; // Cats ban
+using Content.Server.Cats.Discord.Bans; // Cats ban
+using Content.Server.Cats.Discord.Bans.PayloadGenerators; // Cats ban
+using Content.Server.Database; // Cats ban
 using Content.Shared.Administration;
 using Content.Shared.CCVar;
 using Content.Shared.Database;
@@ -15,6 +19,8 @@ public sealed class RoleBanCommand : IConsoleCommand
     [Dependency] private readonly IPlayerLocator _locator = default!;
     [Dependency] private readonly IBanManager _bans = default!;
     [Dependency] private readonly IConfigurationManager _cfg = default!;
+    [Dependency] private readonly IServerDbManager _dbManager = default!; // Cats ban
+    [Dependency] private readonly IDiscordBanInfoSender _discordBanInfoSender = default!; // Cats ban
 
     public string Command => "roleban";
     public string Description => Loc.GetString("cmd-roleban-desc");
@@ -85,8 +91,26 @@ public sealed class RoleBanCommand : IConsoleCommand
 
         var targetUid = located.UserId;
         var targetHWid = located.LastHWId;
+        //Start-Cats-Tweak: логи банов для диса
+        var lastRoleBan = await _dbManager.GetLastServerRoleBanAsync();
+        var newRoleBanId = lastRoleBan is not null ? lastRoleBan.Id + 1 : 1;
+        //End-Cats-Tweak
 
         _bans.CreateRoleBan(targetUid, located.Username, shell.Player?.UserId, null, targetHWid, job, minutes, severity, reason, DateTimeOffset.UtcNow);
+        //Start-Cats-Tweak: логи банов для диса
+        var banInfo = new BanInfo
+        {
+            BanId = newRoleBanId is not null ? newRoleBanId.ToString()! : string.Empty,
+            Target = target,
+            Player = shell.Player,
+            Minutes = minutes,
+            Reason = reason,
+            Expires = DateTimeOffset.Now + TimeSpan.FromMinutes(minutes),
+            AdditionalInfo = new() { { "role", job } }
+        };
+
+        await _discordBanInfoSender.SendBanInfoAsync<RoleBanPayloadGenerator>(banInfo);
+        //End-Cats-Tweak
     }
 
     public CompletionResult GetCompletion(IConsoleShell shell, string[] args)

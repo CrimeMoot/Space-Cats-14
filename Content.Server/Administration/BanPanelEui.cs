@@ -1,7 +1,12 @@
 using System.Net;
+using System.Linq; // Cats ban
 using System.Net.Sockets;
+using System.Text;
 using Content.Server.Administration.Managers;
 using Content.Server.Administration.Systems;
+using Content.Server.Cats.Discord; // Cats ban
+using Content.Server.Cats.Discord.Bans; // Cats ban
+using Content.Server.Cats.Discord.Bans.PayloadGenerators; // Cats ban
 using Content.Server.Chat.Managers;
 using Content.Server.EUI;
 using Content.Shared.Administration;
@@ -19,6 +24,8 @@ public sealed class BanPanelEui : BaseEui
     [Dependency] private readonly IPlayerLocator _playerLocator = default!;
     [Dependency] private readonly IChatManager _chat = default!;
     [Dependency] private readonly IAdminManager _admins = default!;
+    [Dependency] private readonly IServerDbManager _dbManager = default!; // Cats ban
+    [Dependency] private readonly IDiscordBanInfoSender _discordBanInfoSender = default!; // Cats ban
 
     private readonly ISawmill _sawmill;
 
@@ -86,9 +93,9 @@ public sealed class BanPanelEui : BaseEui
             }
 
             if (hidInt == 0)
-                hidInt = (uint) (ipAddress.AddressFamily == AddressFamily.InterNetworkV6 ? Ipv6_CIDR : Ipv4_CIDR);
+                hidInt = (uint)(ipAddress.AddressFamily == AddressFamily.InterNetworkV6 ? Ipv6_CIDR : Ipv4_CIDR);
 
-            addressRange = (ipAddress, (int) hidInt);
+            addressRange = (ipAddress, (int)hidInt);
         }
 
         var targetUid = target is not null ? PlayerId : null;
@@ -119,10 +126,31 @@ public sealed class BanPanelEui : BaseEui
         if (roles?.Count > 0)
         {
             var now = DateTimeOffset.UtcNow;
+            //Start-Cats-Tweak: логи банов для диса
+            var lastRoleBan = await _dbManager.GetLastServerRoleBanAsync();
+            var startRoleBanId = lastRoleBan is not null ? lastRoleBan.Id + 1 : 1;
+            var currentRoleBanId = startRoleBanId;
+            var rolesData = new List<string>();
+            //End-Cats-Tweak
             foreach (var role in roles)
             {
-                _banManager.CreateRoleBan(targetUid, target, Player.UserId, addressRange, targetHWid, role, minutes, severity, reason, now);
+                rolesData.Add(string.Format("{0}:{1}", role, currentRoleBanId++)); // Cats-Tweak
+                await _banManager.CreateRoleBan(targetUid, target, Player.UserId, addressRange, targetHWid, role, minutes, severity, reason, now);
             }
+            //Start-Cats-Tweak: логи банов для диса
+            var roleBanInfo = new BanInfo
+            {
+                BanId = string.Empty,
+                Target = target!,
+                Player = Player,
+                Minutes = minutes,
+                Reason = reason,
+                Expires = DateTimeOffset.Now + TimeSpan.FromMinutes(minutes),
+                AdditionalInfo = new() { { "roles", string.Join(", ", rolesData) } }
+            };
+
+            await _discordBanInfoSender.SendBanInfoAsync<PanelBanPayloadGenerator>(roleBanInfo);
+            //End-Cats-Tweak
 
             Close();
             return;
@@ -142,7 +170,26 @@ public sealed class BanPanelEui : BaseEui
             }
         }
 
+        //Start-Cats-Tweak
+        var lastServerBan = await _dbManager.GetLastServerBanAsync();
+        var newServerBanId = lastServerBan is not null ? lastServerBan.Id + 1 : 1;
+        //End-Cats-Tweak
+
         _banManager.CreateServerBan(targetUid, target, Player.UserId, addressRange, targetHWid, minutes, severity, reason);
+
+        //Start-Cats-Tweak
+        var banInfo = new BanInfo
+        {
+            BanId = newServerBanId.ToString()!,
+            Target = target!,
+            Player = Player,
+            Minutes = minutes,
+            Reason = reason,
+            Expires = DateTimeOffset.Now + TimeSpan.FromMinutes(minutes)
+        };
+
+        await _discordBanInfoSender.SendBanInfoAsync<PanelBanPayloadGenerator>(banInfo);
+        //End-Cats-Tweak
 
         Close();
     }

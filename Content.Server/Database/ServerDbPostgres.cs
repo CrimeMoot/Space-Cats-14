@@ -126,6 +126,16 @@ namespace Content.Server.Database
 
             return bans;
         }
+        //Start-Cats-Tweak: логи банов для диса
+        public override async Task<ServerBanDef?> GetLastServerBanAsync()
+        {
+            await using var db = await GetDbImpl();
+
+            var lastServerBan = db.PgDbContext.Ban.OrderByDescending(x => x.Id).FirstOrDefault();
+
+            return ConvertBan(lastServerBan);
+        }
+        //End-Cats-Tweak
 
         private static IQueryable<ServerBan> MakeBanLookupQuery(
             IPAddress? address,
@@ -346,6 +356,16 @@ namespace Content.Server.Database
 
             return await QueryRoleBans(query);
         }
+        //Start-Cats-Tweak: логи банов для диса
+        public override async Task<ServerRoleBanDef?> GetLastServerRoleBanAsync()
+        {
+            await using var db = await GetDbImpl();
+
+            var lastServerRoleBan = db.PgDbContext.RoleBan.OrderByDescending(x => x.Id).FirstOrDefault();
+
+            return ConvertRoleBan(lastServerRoleBan);
+        }
+        //End-Cats-Tweak
 
         private static async Task<List<ServerRoleBanDef>> QueryRoleBans(IQueryable<ServerRoleBan> query)
         {

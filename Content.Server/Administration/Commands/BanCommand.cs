@@ -1,5 +1,9 @@
 using System.Linq;
 using Content.Server.Administration.Managers;
+using Content.Server.Cats.Discord; // Cats ban
+using Content.Server.Cats.Discord.Bans; // Cats ban
+using Content.Server.Cats.Discord.Bans.PayloadGenerators; // Cats ban
+using Content.Server.Database;
 using Content.Shared.Administration;
 using Content.Shared.CCVar;
 using Content.Shared.Database;
@@ -19,6 +23,8 @@ public sealed class BanCommand : LocalizedCommands
     [Dependency] private readonly IConfigurationManager _cfg = default!;
     [Dependency] private readonly IPlayerManager _playerManager = default!;
     [Dependency] private readonly ILogManager _logManager = default!;
+    [Dependency] private readonly IDiscordBanInfoSender _discordBanInfoSender = default!; // Cats ban
+    [Dependency] private readonly IServerDbManager _dbManager = default!; // Cats ban
 
     public override string Command => "ban";
 
@@ -89,8 +95,26 @@ public sealed class BanCommand : LocalizedCommands
 
         var targetUid = located.UserId;
         var targetHWid = located.LastHWId;
+        //Start-Cats-Tweak: логи банов для диса
+        var lastServerBan = await _dbManager.GetLastServerBanAsync();
+        var newServerBanId = lastServerBan is not null ? lastServerBan.Id + 1 : 1;
+        //End-Cats-Tweak
 
         _bans.CreateServerBan(targetUid, target, player?.UserId, null, targetHWid, minutes, severity, reason);
+
+        //Start-Cats-Tweak: логи банов для диса
+        var banInfo = new BanInfo
+        {
+            BanId = newServerBanId.ToString()!,
+            Target = target,
+            Player = player,
+            Minutes = minutes,
+            Reason = reason,
+            Expires = DateTimeOffset.Now + TimeSpan.FromMinutes(minutes)
+        };
+
+        await _discordBanInfoSender.SendBanInfoAsync<ServerBanPayloadGenerator>(banInfo);
+        //End-Cats-Tweak
     }
 
     public override CompletionResult GetCompletion(IConsoleShell shell, string[] args)
