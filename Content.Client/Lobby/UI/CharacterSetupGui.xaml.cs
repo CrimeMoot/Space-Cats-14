@@ -1,6 +1,7 @@
 using Content.Client.Info;
 using Content.Client.Info.PlaytimeStats;
 using Content.Client.Resources;
+using Content.Client.Stylesheets;
 using Content.Corvax.Interfaces.Client;
 using Content.Shared.CCVar;
 using Content.Shared.Preferences;
@@ -41,7 +42,7 @@ namespace Content.Client.Lobby.UI
             var back = new StyleBoxTexture
             {
                 Texture = panelTex,
-                Modulate = new Color(15, 15, 15)
+                Modulate = StyleNano.PanelDark // Cats edit
             };
             back.SetPatchMargin(StyleBox.Margin.All, 10);
 
