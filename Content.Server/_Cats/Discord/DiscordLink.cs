@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Content.Shared._Cats;
+using Content.Shared._Cats.CCVars;
 using Discord;
 using Discord.WebSocket;
 using Robust.Shared.Configuration;
