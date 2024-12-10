@@ -80,6 +80,7 @@ namespace Content.Server.IoC
             IoCManager.Register<ServerApi>();
             IoCManager.Register<JobWhitelistManager>();
             IoCManager.Register<PlayerRateLimitManager>();
+            IoCManager.Register<DiscordLink>(); // Cats edit
             IoCManager.Register<SharedPlayerRateLimitManager, PlayerRateLimitManager>();
             IoCManager.Register<MappingManager>();
         }
