@@ -161,7 +161,7 @@ namespace Content.Client.Stylesheets
 
         // Cats color
         public static readonly Color DarkBlue = Color.FromHex("#0d0c1b");
-        public static readonly Color SightDarkBlue = Color.FromHex("#1f1d3d");
+        public static readonly Color LightDarkBlue = Color.FromHex("#1f1d3d");
 
         public override Stylesheet Stylesheet { get; }
 
