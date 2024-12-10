@@ -159,7 +159,7 @@ namespace Content.Client.Stylesheets
         public const string StyleClassPinButtonPinned = "pinButtonPinned";
         public const string StyleClassPinButtonUnpinned = "pinButtonUnpinned";
 
-        public static readonly Color ST14_LightDarkBlue = Color.FromHex("#1f1d3d"); // Cats edit
+        public static readonly Color LightDarkBlue = Color.FromHex("#1f1d3d"); // Cats edit
 
         public override Stylesheet Stylesheet { get; }
 
@@ -435,13 +435,13 @@ namespace Content.Client.Stylesheets
             placeholder.SetExpandMargin(StyleBox.Margin.All, -5);
             placeholder.Mode = StyleBoxTexture.StretchMode.Tile;
 
-            var itemListBackgroundSelected = new StyleBoxFlat { BackgroundColor = ST14_LightDarkBlue.WithAlpha(0.7f) }; // Cats edit
+            var itemListBackgroundSelected = new StyleBoxFlat { BackgroundColor = LightDarkBlue.WithAlpha(0.7f) }; // Cats edit
             itemListBackgroundSelected.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
             itemListBackgroundSelected.SetContentMarginOverride(StyleBox.Margin.Horizontal, 4);
             var itemListItemBackgroundDisabled = new StyleBoxFlat { BackgroundColor = new Color(10, 10, 12) };
             itemListItemBackgroundDisabled.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
             itemListItemBackgroundDisabled.SetContentMarginOverride(StyleBox.Margin.Horizontal, 4);
-            var itemListItemBackground = new StyleBoxFlat { BackgroundColor = ST14_DarkBlue.WithAlpha(0.7f) }; // Cats edit
+            var itemListItemBackground = new StyleBoxFlat { BackgroundColor = DarkBlue.WithAlpha(0.7f) }; // Cats edit
             itemListItemBackground.SetContentMarginOverride(StyleBox.Margin.Vertical, 2);
             itemListItemBackground.SetContentMarginOverride(StyleBox.Margin.Horizontal, 4);
             var itemListItemBackgroundTransparent = new StyleBoxFlat { BackgroundColor = Color.Transparent };
@@ -856,11 +856,11 @@ namespace Content.Client.Stylesheets
 
                 Element<ContainerButton>().Class(ListContainer.StyleClassListContainerButton)
                     .Pseudo(ContainerButton.StylePseudoClassHover)
-                    .Prop(Control.StylePropertyModulateSelf, ST14_DarkBlue.WithAlpha(0.7f)), // Cats edit
+                    .Prop(Control.StylePropertyModulateSelf, DarkBlue.WithAlpha(0.7f)), // Cats edit
 
                 Element<ContainerButton>().Class(ListContainer.StyleClassListContainerButton)
                     .Pseudo(ContainerButton.StylePseudoClassPressed)
-                    .Prop(Control.StylePropertyModulateSelf, ST14_DarkBlue.WithAlpha(0.7f)), // Cats edit
+                    .Prop(Control.StylePropertyModulateSelf, DarkBlue.WithAlpha(0.7f)), // Cats edit
 
                 Element<ContainerButton>().Class(ListContainer.StyleClassListContainerButton)
                     .Pseudo(ContainerButton.StylePseudoClassDisabled)
@@ -1427,15 +1427,15 @@ namespace Content.Client.Stylesheets
                 // Different Background shapes ---
                 Element<PanelContainer>().Class(ClassAngleRect)
                     .Prop(PanelContainer.StylePropertyPanel, BaseAngleRect)
-                    .Prop(Control.StylePropertyModulateSelf, ST14_DarkBlue), // Cats edit
+                    .Prop(Control.StylePropertyModulateSelf, DarkBlue), // Cats edit
 
                 Element<PanelContainer>().Class("BackgroundOpenRight")
                     .Prop(PanelContainer.StylePropertyPanel, BaseButtonOpenRight)
-                    .Prop(Control.StylePropertyModulateSelf, ST14_DarkBlue), // Cats edit
+                    .Prop(Control.StylePropertyModulateSelf, DarkBlue), // Cats edit
 
                 Element<PanelContainer>().Class("BackgroundOpenLeft")
                     .Prop(PanelContainer.StylePropertyPanel, BaseButtonOpenLeft)
-                    .Prop(Control.StylePropertyModulateSelf, ST14_DarkBlue), // Cats edit
+                    .Prop(Control.StylePropertyModulateSelf, DarkBlue), // Cats edit
                 // ---
 
                 // Dividers
@@ -1477,7 +1477,7 @@ namespace Content.Client.Stylesheets
 
                 Element<PanelContainer>().Class("PanelBackgroundLight")
                     .Prop("panel", new StyleBoxTexture(BaseButtonOpenBoth) { Padding = default })
-                    .Prop(Control.StylePropertyModulateSelf, ST14_DarkBlue), // Cats edit
+                    .Prop(Control.StylePropertyModulateSelf, DarkBlue), // Cats edit
 
                 // Window Footer
                 Element<TextureRect>().Class("NTLogoDark")
