@@ -159,7 +159,9 @@ namespace Content.Client.Stylesheets
         public const string StyleClassPinButtonPinned = "pinButtonPinned";
         public const string StyleClassPinButtonUnpinned = "pinButtonUnpinned";
 
-        public static readonly Color LightDarkBlue = Color.FromHex("#1f1d3d"); // Cats edit
+        // Cats color
+        public static readonly Color DarkBlue = Color.FromHex("#0d0c1b");
+        public static readonly Color SightDarkBlue = Color.FromHex("#1f1d3d");
 
         public override Stylesheet Stylesheet { get; }
 
