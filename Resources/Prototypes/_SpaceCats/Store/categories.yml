@@ -13,3 +13,7 @@
 - type: storeCategory
   id: Daki
   name: store-category-vending-daki
+
+- type: storeCategory
+  id: BoomBox
+  name: store-category-vending-boombox

@@ -1,0 +1,197 @@
+- type: entity
+  parent: BaseItem
+  id: BaseBoomBox
+  name: Бумбокс
+  description: Бумбокс, который покажет всем, кто здесь главный.
+  components:
+    - type: Sprite
+      sprite: _SpaceCats/Objects/Devices/boomboxs.rsi
+      state: boombox
+    - type: BoomBox
+      slots:
+        boombox_slot:
+          whitelist:
+            tags:
+              - BoomBoxTape
+          locked: false
+          swap: false
+          ejectOnDeconstruct: true
+          ejectOnBreak: true
+    - type: CargoSellBlacklist
+    - type: ItemSlots
+    - type: ContainerContainer
+      containers:
+        boombox_slot: !type:ContainerSlot
+          showEnts: False
+          occludes: True
+          ent: null
+    - type: DeviceLinkSource
+      ports:
+      - Pressed
+    - type: Item
+      size: Normal
+    - type: StaticPrice
+      price: 100000
+    - type: ActivatableUI
+      key: enum.BoomBoxUiKey.Key
+    - type: UserInterface
+      interfaces:
+      - key: enum.BoomBoxUiKey.Key
+        type: BoomBoxBoundUi
+
+- type: entity
+  parent: BaseItem
+  id: BaseBoomBoxTape
+  abstract: true
+  components:
+    - type: Sprite
+      sprite: _SpaceCats/Objects/Devices/boomboxtape.rsi
+      state: tape
+    - type: StaticPrice
+      price: 20000
+    - type: Tag
+      tags:
+        - BoomBoxTape
+    - type: Item
+      size: Small
+    - type: CargoSellBlacklist
+    - type: BoomBoxTape
+      soundPath: /Audio/Jukebox/constellations.ogg
+      syndStatus: false
+      syndItem: "SyndicatePersonalAI"
+
+- type: entity
+  parent: BaseBoomBoxTape
+  id: BaseBoomBoxTapeDrifting
+  name: Qwertyquerty - Drifting
+  description: Ageless classics...
+  components:
+    - type: BoomBoxTape
+      soundPath: /Audio/Jukebox/drifting.ogg
+
+- type: entity
+  parent: BaseBoomBoxTape
+  id: BaseBoomBoxTapeFlipFlap
+  name: X-CEED - Flip Flap
+  description: Ageless classics...
+  components:
+    - type: BoomBoxTape
+      soundPath: /Audio/Jukebox/flip-flap.ogg
+
+- type: entity
+  parent: BaseBoomBoxTape
+  id: BaseBoomBoxTapeSector11
+  name: MashedByMachines - Sector 11
+  description: Ageless classics...
+  components:
+    - type: BoomBoxTape
+      soundPath: /Audio/Jukebox/sector11.ogg
+
+- type: entity
+  parent: BaseBoomBoxTape
+  id: BaseBoomBoxTapeStarlight
+  name: Qwertyquerty - Starlight
+  description: Ageless classics...
+  components:
+    - type: BoomBoxTape
+      soundPath: /Audio/Jukebox/starlight.ogg
+
+- type: entity
+  parent: BaseBoomBoxTape
+  id: BaseBoomBoxTapeSunset
+  name: PigeonBeans - Sunset
+  description: Ageless classics...
+  components:
+    - type: BoomBoxTape
+      soundPath: /Audio/_Cats/Admin_Abuse/sunset.ogg
+
+
+- type: entity
+  parent: BaseBoomBoxTape
+  id: BaseBoomBoxTapeTitle3
+  name: Fleetwood Mac - The Chain
+  description: Ageless classics...
+  components:
+    - type: BoomBoxTape
+      soundPath: /Audio/_Cats/Admin_Abuse/title3.ogg
+
+- type: entity
+  parent: BaseBoomBoxTape
+  id: BaseBoomBoxTapeTemaDanger
+  name: Barry Manilow - Cant Smile Without You
+  description: Ageless classics...
+  components:
+    - type: BoomBoxTape
+      soundPath: /Audio/_Cats/Admin_Abuse/тема-опасности.ogg
+
+- type: entity
+  parent: BaseBoomBoxTape
+  id: BaseBoomBoxTapeTemaSal
+  name: The Theme Is Deserts
+  description: Ageless classics...
+  components:
+    - type: BoomBoxTape
+      soundPath: /Audio/_Cats/Admin_Abuse/тема-пустыни.ogg
+
+- type: entity
+  parent: BaseBoomBoxTape
+  id: BaseBoomBoxTapeTemaOld
+  name: The Theme Is Childhood
+  description: Ageless classics...
+  components:
+    - type: BoomBoxTape
+      soundPath: /Audio/_Cats/Admin_Abuse/тема-детства.ogg
+
+- type: entity
+  parent: BaseBoomBoxTape
+  id: BaseBoomBoxTapeTemaDisco
+  name: Barry Manilow - Cant Smile Without You
+  description: Ageless classics...
+  components:
+    - type: BoomBoxTape
+      soundPath: /Audio/_Cats/Admin_Abuse/танцор-диско.ogg
+
+- type: entity
+  parent: BaseBoomBoxTape
+  id: BaseBoomBoxTapeHunter
+  name: The Chase
+  description: Ageless classics...
+  components:
+    - type: BoomBoxTape
+      soundPath: /Audio/_Cats/Admin_Abuse/погоня.ogg
+
+- type: entity
+  parent: BaseBoomBoxTape
+  id: BaseBoomBoxTapeWizard
+  name: Mysterious Theme
+  description: Ageless classics...
+  components:
+    - type: BoomBoxTape
+      soundPath: /Audio/_Cats/Admin_Abuse/загадочная-тема.ogg
+
+- type: entity
+  parent: BaseBoomBoxTape
+  id: BaseBoomBoxTapeIronNyNya
+  name: Iron Nanny
+  description: Ageless classics...
+  components:
+    - type: BoomBoxTape
+      soundPath: /Audio/_Cats/Admin_Abuse/железная-няня.ogg
+
+- type: entity
+  parent: BaseBoomBoxTape
+  id: BaseBoomBoxTapeScemist
+  name: Scientific Topic
+  description: Ageless classics...
+  components:
+    - type: BoomBoxTape
+      soundPath: /Audio/_Cats/Admin_Abuse/Научная-тема.ogg
+
+- type: entity
+  parent: BaseBoomBoxTape
+  id: BaseBoomBoxTapeJustTheTwoOfU
+  name: Just The Two Of Us
+  description: Ageless classics...
+  components:
+    - type: BoomBoxTape
+      soundPath: /Audio/_Cats/Admin_Abuse/Just-The-Two-Of-Us.ogg

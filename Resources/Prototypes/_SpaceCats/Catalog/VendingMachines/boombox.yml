@@ -1,0 +1,175 @@
+- type: listing
+  id: AccessoriesBoomBox
+  productEntity: BaseBoomBox
+  cost:
+    SpaceCash: 1500
+  categories:
+    - BoomBox
+  conditions:
+    - !type:ListingLimitedStockCondition
+      stock: 2
+
+- type: listing
+  id: AccessoriesBoomBox1
+  productEntity: BaseBoomBoxTapeDrifting
+  cost:
+    SpaceCash: 100
+  categories:
+    - BoomBox
+  conditions:
+    - !type:ListingLimitedStockCondition
+      stock: 2
+
+- type: listing
+  id: AccessoriesBoomBox2
+  productEntity: BaseBoomBoxTapeFlipFlap
+  cost:
+    SpaceCash: 100
+  categories:
+    - BoomBox
+  conditions:
+    - !type:ListingLimitedStockCondition
+      stock: 2
+
+- type: listing
+  id: AccessoriesBoomBox3
+  productEntity: BaseBoomBoxTapeSector11
+  cost:
+    SpaceCash: 100
+  categories:
+    - BoomBox
+  conditions:
+    - !type:ListingLimitedStockCondition
+      stock: 2
+
+- type: listing
+  id: AccessoriesBoomBox4
+  productEntity: aseBoomBoxTapeStarlight
+  cost:
+    SpaceCash: 100
+  categories:
+    - BoomBox
+  conditions:
+    - !type:ListingLimitedStockCondition
+      stock: 2
+
+- type: listing
+  id: AccessoriesBoomBox5
+  productEntity: BaseBoomBoxTapeSunset
+  cost:
+    SpaceCash: 100
+  categories:
+    - BoomBox
+  conditions:
+    - !type:ListingLimitedStockCondition
+      stock: 2
+
+- type: listing
+  id: AccessoriesBoomBox6
+  productEntity: BaseBoomBoxTapeTitle3
+  cost:
+    SpaceCash: 100
+  categories:
+    - BoomBox
+  conditions:
+    - !type:ListingLimitedStockCondition
+      stock: 2
+
+- type: listing
+  id: AccessoriesBoomBox7
+  productEntity: BaseBoomBoxTapeTemaDanger
+  cost:
+    SpaceCash: 100
+  categories:
+    - BoomBox
+  conditions:
+    - !type:ListingLimitedStockCondition
+      stock: 2
+
+- type: listing
+  id: AccessoriesBoomBox8
+  productEntity: BaseBoomBoxTapeTemaSal
+  cost:
+    SpaceCash: 100
+  categories:
+    - BoomBox
+  conditions:
+    - !type:ListingLimitedStockCondition
+      stock: 2
+
+- type: listing
+  id: AccessoriesBoomBox9
+  productEntity: BaseBoomBoxTapeTemaOld
+  cost:
+    SpaceCash: 100
+  categories:
+    - BoomBox
+  conditions:
+    - !type:ListingLimitedStockCondition
+      stock: 2
+
+- type: listing
+  id: AccessoriesBoomBox10
+  productEntity: BaseBoomBoxTapeTemaDisco
+  cost:
+    SpaceCash: 100
+  categories:
+    - BoomBox
+  conditions:
+    - !type:ListingLimitedStockCondition
+      stock: 2
+
+- type: listing
+  id: AccessoriesBoomBox11
+  productEntity: BaseBoomBoxTapeHunter
+  cost:
+    SpaceCash: 100
+  categories:
+    - BoomBox
+  conditions:
+    - !type:ListingLimitedStockCondition
+      stock: 2
+
+- type: listing
+  id: AccessoriesBoomBox12
+  productEntity: BaseBoomBoxTapeWizard
+  cost:
+    SpaceCash: 100
+  categories:
+    - BoomBox
+  conditions:
+    - !type:ListingLimitedStockCondition
+      stock: 2
+
+- type: listing
+  id: AccessoriesBoomBox13
+  productEntity: BaseBoomBoxTapeIronNyNya
+  cost:
+    SpaceCash: 100
+  categories:
+    - BoomBox
+  conditions:
+    - !type:ListingLimitedStockCondition
+      stock: 2
+
+- type: listing
+  id: AccessoriesBoomBox14
+  productEntity: BaseBoomBoxTapeScemist
+  cost:
+    SpaceCash: 100
+  categories:
+    - BoomBox
+  conditions:
+    - !type:ListingLimitedStockCondition
+      stock: 2
+
+- type: listing
+  id: AccessoriesBoomBox15
+  productEntity: BaseBoomBoxTapeJustTheTwoOfU
+  cost:
+    SpaceCash: 100
+  categories:
+    - BoomBox
+  conditions:
+    - !type:ListingLimitedStockCondition
+      stock: 2
