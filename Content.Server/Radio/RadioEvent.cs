@@ -10,7 +10,8 @@ public readonly record struct RadioReceiveEvent(
     EntityUid MessageSource,
     RadioChannelPrototype Channel,
     EntityUid RadioSource,
-    MsgChatMessage ChatMsg
+    MsgChatMessage ChatMsg,
+    List<EntityUid> Receivers
 )
 {
     // start-backmen: language

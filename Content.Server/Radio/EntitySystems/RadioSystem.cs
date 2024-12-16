@@ -1,4 +1,4 @@
-using Content.Server._Cats.Radio;
+using System.Globalization;
 using Content.Server.Administration.Logs;
 using Content.Server.Backmen.Language;
 using Content.Server.Chat.Systems;
@@ -6,8 +6,11 @@ using Content.Server.Power.Components;
 using Content.Server.Radio.Components;
 using Content.Shared.Backmen.Language;
 using Content.Server.VoiceMask;
+using Content.Shared.Access.Components;
 using Content.Shared.Chat;
 using Content.Shared.Database;
+using Content.Shared.Inventory;
+using Content.Shared.PDA;
 using Content.Shared.Radio;
 using Content.Shared.Radio.Components;
 using Content.Shared.Speech;
@@ -33,7 +36,7 @@ public sealed class RadioSystem : EntitySystem
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly LanguageSystem _language = default!;
-    [Dependency] private readonly JobPlayer _jobPlayer = default!;
+    [Dependency] private readonly InventorySystem _inventorySystem = default!;
 
     // set used to prevent radio feedback loops.
     private readonly HashSet<string> _messages = new();
@@ -108,8 +111,8 @@ public sealed class RadioSystem : EntitySystem
         return Loc.GetString(speech.Bold ? "chat-radio-message-wrap-bold" : "chat-radio-message-wrap",
             ("color", channel.Color),
             ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
-            ("channel", $"\\[{channel.LocalizedName}\\]"),
-            ("name", name),
+            ("channel", $"\\[{channel.LocalizedName}\\]"), // Cats edit
+            ("name", formattedName),
             ("message", message));
     }
 // end-backmen: language
@@ -129,16 +132,8 @@ public sealed class RadioSystem : EntitySystem
         RaiseLocalEvent(messageSource, evt);
 
         var name = evt.VoiceName;
-        // CATS EDIT RADIO START
-        // Если из-за отображений должностей что-то сломается после какого-то обновления, то расскоментируйте данный код и закомментируйте код ниже, который я укажу. Данные действия просто вернут старый код
-        // name = FormattedMessage.EscapeText(name);
 
-        // В случае поломки комментируй данный код до "SpeechVerbPrototype speech;"
-        // Почему бы просто сразу в name не сохранять? Потому что потом проверять надо будет, и там без данной переменной никак. Не будем же мы проверять: "if (name != name)". Если это убрать, у админов постоянно будет true в самой нижней проверке этого метода
-        string? newName = _jobPlayer.CompletedJobAndPlayer(messageSource, name);
-        // Тут уже мы делаем необходимый name
-        name = newName;
-        // CATS EDIT RADIO END
+        name = FormattedMessage.EscapeText(name);
 
         SpeechVerbPrototype speech;
         if (evt.SpeechVerb != null && _prototype.TryIndex(evt.SpeechVerb, out var evntProto))
@@ -149,6 +144,13 @@ public sealed class RadioSystem : EntitySystem
         var content = escapeMarkup
             ? FormattedMessage.EscapeText(message)
             : message;
+
+        // Cats edit start
+        if (GetIdCardIsBold(messageSource))
+        {
+            content = $"[bold]{content}[/bold]";
+        }
+        // Cats edit end
 
         var wrappedMessage = WrapRadioMessage(messageSource, speech, channel, name, content, language); // backmen: language
 
@@ -171,7 +173,7 @@ public sealed class RadioSystem : EntitySystem
         }
         // end-backmen: language
 
-        var ev = new RadioReceiveEvent(message, messageSource, channel, radioSource, chatMsg)
+        var ev = new RadioReceiveEvent(message, messageSource, channel, radioSource, chatMsg, [])
         // start-backmen: language
         {
             LanguageObfuscatedChatMsg = notUdsMsg,
@@ -217,7 +219,7 @@ public sealed class RadioSystem : EntitySystem
             RaiseLocalEvent(receiver, ref ev);
         }
 
-        if ((name != Name(messageSource)) && (name != newName)) // CATS EDIT RADIO
+        if (name != Name(messageSource))
             _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Radio message from {ToPrettyString(messageSource):user} as {name} on {channel.LocalizedName}: {message}");
         else
             _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Radio message from {ToPrettyString(messageSource):user} on {channel.LocalizedName}: {message}");
@@ -225,6 +227,48 @@ public sealed class RadioSystem : EntitySystem
         _replay.RecordServerMessage(chat);
         _messages.Remove(message);
     }
+
+    // cats edit start
+    private IdCardComponent? GetIdCard(EntityUid senderUid)
+    {
+        if (!_inventorySystem.TryGetSlotEntity(senderUid, "id", out var idUid))
+            return null;
+
+        if (EntityManager.TryGetComponent(idUid, out PdaComponent? pda) && pda.ContainedId is not null)
+        {
+            if (TryComp<IdCardComponent>(pda.ContainedId, out var idComp))
+                return idComp;
+        }
+        else if (EntityManager.TryGetComponent(idUid, out IdCardComponent? id))
+        {
+            return id;
+        }
+
+        return null;
+    }
+
+    private string GetIdCardName(EntityUid senderUid)
+    {
+        var idCardTitle = Loc.GetString("chat-radio-no-id");
+        idCardTitle = GetIdCard(senderUid)?.JobTitle ?? idCardTitle;
+
+        var textInfo = CultureInfo.CurrentCulture.TextInfo;
+        idCardTitle = textInfo.ToTitleCase(idCardTitle);
+
+        return $"\\[{idCardTitle}\\] ";
+    }
+
+    private string GetIdCardColor(EntityUid senderUid)
+    {
+        var color = GetIdCard(senderUid)?.JobColor;
+        return (!string.IsNullOrEmpty(color)) ? color : "#9FED58";
+    }
+
+    private bool GetIdCardIsBold(EntityUid senderUid)
+    {
+        return GetIdCard(senderUid)?.RadioBold ?? false;
+    }
+    // Cats edit end
 
     /// <inheritdoc cref="TelecomServerComponent"/>
     private bool HasActiveServer(MapId mapId, string channelId)

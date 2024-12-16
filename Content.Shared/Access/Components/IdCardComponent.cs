@@ -42,6 +42,16 @@ public sealed partial class IdCardComponent : Component
     [AutoNetworkedField]
     public List<ProtoId<DepartmentPrototype>> JobDepartments = new();
 
+    // Cats edit start
+    [DataField("jobColor")]
+    [AutoNetworkedField]
+    public string? JobColor;
+
+    [DataField("radioBold")]
+    [AutoNetworkedField]
+    public bool? RadioBold;
+    // Cats edit end
+
     // start-backmen: currency
     [DataField("storedBankAccountNumber")]
     [AutoNetworkedField]

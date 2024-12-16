@@ -29,6 +29,8 @@ public sealed partial class DepartmentPrototype : IPrototype
     [DataField, ViewVariables(VVAccess.ReadWrite)]
     public List<ProtoId<JobPrototype>> Roles = new();
 
+    [DataField("sort")] public int Sort;
+
 // start-backmen: currency
     [DataField("accountNumber")]
     public string? AccountNumber { get; private set; }
