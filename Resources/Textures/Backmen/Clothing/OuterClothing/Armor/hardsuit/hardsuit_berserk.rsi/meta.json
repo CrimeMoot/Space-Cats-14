@@ -1,7 +1,11 @@
 {
   "version": 1,
   "license": "CC-BY-SA-3.0",
+<<<<<<< HEAD:Resources/Textures/Backmen/Clothing/OuterClothing/Armor/hardsuit/hardsuit_berserk.rsi/meta.json
   "copyright": "Created by @driga7",
+=======
+  "copyright": "Sprited by belay5 (Discord), equipped-OUTERCLOTHING-resomi made by Pofitlo",
+>>>>>>> 7e074d435e (fix rsi validation):Resources/Textures/Clothing/OuterClothing/WinterCoats/syndicate/wintercoatsyndie.rsi/meta.json
   "size": {
     "x": 32,
     "y": 32
@@ -12,6 +16,10 @@
     },
     {
       "name": "equipped-OUTERCLOTHING",
+      "directions": 4
+    },
+    {
+      "name": "equipped-OUTERCLOTHING-resomi",
       "directions": 4
     },
     {

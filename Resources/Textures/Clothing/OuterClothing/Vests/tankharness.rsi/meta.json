@@ -1,7 +1,11 @@
 {
   "version": 1,
   "license": "CC-BY-SA-3.0",
+<<<<<<< HEAD:Resources/Textures/Clothing/OuterClothing/Vests/tankharness.rsi/meta.json
   "copyright": "Modified from tgstation vest sprite at commit https://github.com/tgstation/tgstation/commit/4f6190e2895e09116663ef282d3ce1d8b35c032e by Errant for Space Station 14",
+=======
+  "copyright": "Taken from vg at commit https://github.com/vgstation-coders/vgstation13/commit/31d6576ba8102135d058ef49c3cb6ecbe8db8a79 / https://github.com/tgstation/tgstation/commit/77cff42b6c514e73881a885036be4b4dd2949f62, recolored by Github user Dutch-VanDerLinde, equipped-OUTERCLOTHING-resomi made by Pofitlo",
+>>>>>>> 7e074d435e (fix rsi validation):Resources/Textures/Clothing/OuterClothing/WinterCoats/coatwarden.rsi/meta.json
   "size": {
     "x": 32,
     "y": 32
@@ -16,6 +20,10 @@
     },
     {
       "name": "equipped-OUTERCLOTHING-vox",
+      "directions": 4
+    },
+    {
+      "name": "equipped-OUTERCLOTHING-resomi",
       "directions": 4
     },
     {

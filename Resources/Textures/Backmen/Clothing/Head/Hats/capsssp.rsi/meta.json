@@ -1,7 +1,11 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
+<<<<<<< HEAD:Resources/Textures/Backmen/Clothing/Head/Hats/capsssp.rsi/meta.json
     "copyright": "made by discord: fizzoghoster",
+=======
+    "copyright": "Taken from vg at commit https://github.com/vgstation-coders/vgstation13/commit/31d6576ba8102135d058ef49c3cb6ecbe8db8a79, equipped-OUTERCLOTHING-resomi made by Pofitlo",
+>>>>>>> 7e074d435e (fix rsi validation):Resources/Textures/Clothing/OuterClothing/WinterCoats/coatbar.rsi/meta.json
     "size": {
         "x": 32,
         "y": 32
@@ -19,6 +23,21 @@
             "name": "icon"
         },
         {
+<<<<<<< HEAD:Resources/Textures/Backmen/Clothing/Head/Hats/capsssp.rsi/meta.json
+=======
+            "name": "equipped-OUTERCLOTHING",
+            "directions": 4
+        },
+        {
+            "name": "equipped-OUTERCLOTHING-vox",
+            "directions": 4
+        },
+        {
+            "name": "equipped-OUTERCLOTHING-resomi",
+            "directions": 4
+        },
+        {
+>>>>>>> 7e074d435e (fix rsi validation):Resources/Textures/Clothing/OuterClothing/WinterCoats/coatbar.rsi/meta.json
             "name": "inhand-left",
             "directions": 4
         },

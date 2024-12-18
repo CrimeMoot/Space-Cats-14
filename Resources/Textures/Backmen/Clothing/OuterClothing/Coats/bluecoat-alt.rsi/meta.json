@@ -1,17 +1,26 @@
 {
   "version": 1,
   "license": "CC-BY-SA-3.0",
+<<<<<<< HEAD:Resources/Textures/Backmen/Clothing/OuterClothing/Coats/bluecoat-alt.rsi/meta.json
   "copyright": "made by no_mad.",
   "size": {
     "x": 32,
     "y": 32
   },
+=======
+  "copyright": "Made by PixelTheKermit (github) for SS14, equipped-OUTERCLOTHING-resomi made by Pofitlo",
+  "size": {"x": 32, "y": 32},
+>>>>>>> 7e074d435e (fix rsi validation):Resources/Textures/Clothing/OuterClothing/WinterCoats/coatweb.rsi/meta.json
   "states": [
     {
       "name": "icon"
     },
     {
       "name": "equipped-OUTERCLOTHING",
+      "directions": 4
+    },
+    {
+      "name": "equipped-OUTERCLOTHING-resomi",
       "directions": 4
     },
     {
