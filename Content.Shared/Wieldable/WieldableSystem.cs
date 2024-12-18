@@ -20,6 +20,7 @@ using Content.Shared.Wieldable.Components;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Network;
 using Robust.Shared.Timing;
+using Content.Shared._White.Resomi.Abilities;
 
 namespace Content.Shared.Wieldable;
 
