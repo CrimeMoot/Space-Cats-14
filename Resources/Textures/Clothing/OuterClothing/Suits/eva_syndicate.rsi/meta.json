@@ -15,15 +15,15 @@
       "directions": 4
     },
     {
-      "name": "equipped-OUTERCLOTHING-vox",
-      "directions": 4
-    },
-    {
       "name": "equipped-OUTERCLOTHING-monkey",
       "directions": 4
     },
     {
-      "name": "equipped-OUTERCLOTHING-reptilian",
+      "name": "equipped-OUTERCLOTHING-harpy",
+      "directions": 4
+    },
+    {
+      "name": "equipped-OUTERCLOTHING-vox",
       "directions": 4
     },
     {
