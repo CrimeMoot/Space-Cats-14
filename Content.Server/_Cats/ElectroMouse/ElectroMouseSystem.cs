@@ -74,7 +74,7 @@ public sealed partial class ElectroMouseSystem : EntitySystem
 
         SubscribeLocalEvent<ElectroMouseComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<ElectroMouseComponent, ElectroMouseShopActionEvent>(OnShop);
-        SubscribeLocalEvent<ElectroMouseComponent, InteractHandEvent>(OnInteract);
+        SubscribeLocalEvent<ElectroMouseComponent, InteractNoHandEvent>(OnInteract);
         SubscribeLocalEvent<ElectroMouseComponent, HarvestEvent>(OnHarvest);
         SubscribeLocalEvent<ElectroMouseComponent, ElectroMouseOverloadLightsActionEvent>(OnOverloadLightsAction);
         SubscribeLocalEvent<ElectroMouseComponent, ElectroMouseDashEvent>(DashAbility);
@@ -370,7 +370,7 @@ public sealed partial class ElectroMouseSystem : EntitySystem
         _action.AddAction(uid, ref component.Action, component.ShopId);
     }
 
-    private void OnInteract(EntityUid uid, ElectroMouseComponent component, InteractHandEvent args)
+    private void OnInteract(EntityUid uid, ElectroMouseComponent component, InteractNoHandEvent args)
     {
         if (args.Target == null)
             return;
