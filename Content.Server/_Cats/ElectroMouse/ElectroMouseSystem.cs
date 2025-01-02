@@ -8,6 +8,7 @@ using Content.Shared.Revenant;
 using Content.Shared.FixedPoint;
 using Content.Shared._Cats.ElectroMouse.Components;
 using Content.Shared.Interaction;
+using Content.Shared.Interaction.Events;
 using Content.Server.Power.Components;
 using Content.Shared.DoAfter;
 using Content.Shared.Popups;
@@ -66,6 +67,7 @@ public sealed partial class ElectroMouseSystem : EntitySystem
     [Dependency] private readonly BeamSystem _beam = default!;
     [Dependency] private readonly PhysicsSystem _physics = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
+    
     public override void Initialize()
     {
         base.Initialize();
@@ -647,10 +649,10 @@ public sealed partial class ElectroMouseSystem : EntitySystem
         //TODO: feels like this might be a sin and a half
         foreach (var ent in lookup)
         {
-            if (!HasComp<MobStateComponent>(ent)) continue; // _Cats Space overload-lights-fix
-            if (!_mobState.IsAlive(ent)) continue; // _Cats Space overload-lights-fix
+            if (!HasComp<MobStateComponent>(ent)) continue;
+            if (!_mobState.IsAlive(ent)) continue;
 
-            var nearbyLights = _lookup.GetEntitiesInRange(ent, component.OverloadZapRadius) // _Cats Space overload-lights-fix
+            var nearbyLights = _lookup.GetEntitiesInRange(ent, component.OverloadZapRadius)
                 .Where(e => !HasComp<RevenantOverloadedLightsComponent>(e) &&
                             _interact.InRangeUnobstructed(e, uid, -1)).ToArray();
 
