@@ -11,6 +11,7 @@ using Robust.Shared.Audio;
 using Robust.Shared.Input;
 using Robust.Shared.Player;
 using Robust.Shared.Utility;
+using System.Linq; // Ganimed
 using static Robust.Client.UserInterface.Controls.LineEdit;
 
 namespace Content.Client.UserInterface.Systems.Chat.Widgets;
@@ -74,7 +75,7 @@ public partial class ChatBox : UIWidget
 
     public void Repopulate()
     {
-        Contents.Clear();
+        ClearChatContents(); // Ganimed
 
         foreach (var message in _controller.History)
         {
@@ -84,7 +85,7 @@ public partial class ChatBox : UIWidget
 
     private void OnChannelFilter(ChatChannel channel, bool active)
     {
-        Contents.Clear();
+        ClearChatContents(); // Ganimed
 
         foreach (var message in _controller.History)
         {
@@ -96,6 +97,21 @@ public partial class ChatBox : UIWidget
             _controller.ClearUnfilteredUnreads(channel);
         }
     }
+
+    // Ganimed start
+    private void ClearChatContents()
+    {
+        Contents.Clear();
+
+        foreach (var child in Contents.Children.ToArray())
+        {
+            if (child.Name != "_v_scroll")
+            {
+                Contents.RemoveChild(child);
+            }
+        }
+    }
+    // Ganimed end
 
     public void AddLine(string message, Color color)
     {

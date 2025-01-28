@@ -1,9 +1,10 @@
-using Content.Server._Cats.Radio;
 using Content.Server.Administration.Logs;
 using Content.Server.Backmen.Language;
 using Content.Server.Chat.Systems;
 using Content.Server.Power.Components;
 using Content.Server.Radio.Components;
+using Content.Shared.Silicons.Borgs.Components;
+using Content.Shared.Silicons.StationAi;
 using Content.Shared.Backmen.Language;
 using Content.Server.VoiceMask;
 using Content.Shared.Chat;
@@ -33,12 +34,17 @@ public sealed class RadioSystem : EntitySystem
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly LanguageSystem _language = default!;
-    [Dependency] private readonly JobPlayer _jobPlayer = default!;
 
     // set used to prevent radio feedback loops.
     private readonly HashSet<string> _messages = new();
 
     private EntityQuery<TelecomExemptComponent> _exemptQuery;
+
+    // Cats start
+    private const string NoIdIconPath = "/Textures/Interface/Misc/job_icons.rsi/NoId.png";
+    private const string StationAiIconPath = "/Textures/Interface/Misc/job_icons.rsi/StationAi.png";
+    private const string BorgIconPath = "/Textures/Interface/Misc/job_icons.rsi/Borg.png";
+    // Cats end
 
     public override void Initialize()
     {
@@ -129,16 +135,18 @@ public sealed class RadioSystem : EntitySystem
         RaiseLocalEvent(messageSource, evt);
 
         var name = evt.VoiceName;
-        // CATS EDIT RADIO START
-        // Если из-за отображений должностей что-то сломается после какого-то обновления, то расскоментируйте данный код и закомментируйте код ниже, который я укажу. Данные действия просто вернут старый код
-        // name = FormattedMessage.EscapeText(name);
+        name = FormattedMessage.EscapeText(name);
 
-        // В случае поломки комментируй данный код до "SpeechVerbPrototype speech;"
-        // Почему бы просто сразу в name не сохранять? Потому что потом проверять надо будет, и там без данной переменной никак. Не будем же мы проверять: "if (name != name)". Если это убрать, у админов постоянно будет true в самой нижней проверке этого метода
-        string? newName = _jobPlayer.CompletedJobAndPlayer(messageSource, name);
-        // Тут уже мы делаем необходимый name
-        name = newName;
-        // CATS EDIT RADIO END
+        // cats edit start
+        var tag = Loc.GetString("radio-icon-tag",
+            ("path", GetIdSprite(messageSource)),
+            ("scale", "3"),
+            ("text", GetIdCardName(messageSource)),
+            ("color", GetIdCardColor(messageSource))
+        );
+
+        var formattedName = $"{tag} {name}";
+        // cats edit end
 
         SpeechVerbPrototype speech;
         if (evt.SpeechVerb != null && _prototype.TryIndex(evt.SpeechVerb, out var evntProto))
@@ -217,7 +225,7 @@ public sealed class RadioSystem : EntitySystem
             RaiseLocalEvent(receiver, ref ev);
         }
 
-        if ((name != Name(messageSource)) && (name != newName)) // CATS EDIT RADIO
+        if (name != Name(messageSource))
             _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Radio message from {ToPrettyString(messageSource):user} as {name} on {channel.LocalizedName}: {message}");
         else
             _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Radio message from {ToPrettyString(messageSource):user} on {channel.LocalizedName}: {message}");
@@ -225,6 +233,71 @@ public sealed class RadioSystem : EntitySystem
         _replay.RecordServerMessage(chat);
         _messages.Remove(message);
     }
+
+    // Cats edit
+    private IdCardComponent? GetIdCard(EntityUid senderUid)
+    {
+        if (!_inventorySystem.TryGetSlotEntity(senderUid, "id", out var idUid))
+            return null;
+        if (EntityManager.TryGetComponent(idUid, out PdaComponent? pda) && pda.ContainedId is not null)
+        {
+            if (TryComp<IdCardComponent>(pda.ContainedId, out var idComp))
+                return idComp;
+        }
+        else if (EntityManager.TryGetComponent(idUid, out IdCardComponent? id))
+        {
+            return id;
+        }
+        return null;
+    }
+    private string GetIdCardName(EntityUid senderUid)
+    {
+        var idCardTitle = Loc.GetString("chat-radio-no-id");
+        idCardTitle = GetIdCard(senderUid)?.LocalizedJobTitle ?? idCardTitle;
+        var textInfo = CultureInfo.CurrentCulture.TextInfo;
+        idCardTitle = textInfo.ToTitleCase(idCardTitle);
+
+        return $"[{idCardTitle}] ";
+    }
+
+    private string GetIdCardColor(EntityUid senderUid)
+    {
+        var color = GetIdCard(senderUid)?.JobColor;
+        return (!string.IsNullOrEmpty(color)) ? color : "#9FED58";
+    }
+
+    private string GetIdSprite(EntityUid senderUid)
+    {
+        if (HasComp<BorgChassisComponent>(senderUid))
+            return BorgIconPath;
+
+        if (HasComp<StationAiHeldComponent>(senderUid))
+            return StationAiIconPath;
+
+        var protoId = GetIdCard(senderUid)?.JobIcon;
+        var sprite = NoIdIconPath;
+
+        if (_prototype.TryIndex(protoId, out var prototype))
+        {
+            switch (prototype.Icon)
+            {
+                case SpriteSpecifier.Texture tex:
+                    sprite = tex.TexturePath.CanonPath;
+                    break;
+                case SpriteSpecifier.Rsi rsi:
+                    sprite = rsi.RsiPath.CanonPath + "/" + rsi.RsiState + ".png";
+                    break;
+            }
+        }
+
+        return sprite;
+    }
+
+    private bool GetIdCardIsBold(EntityUid senderUid)
+    {
+        return GetIdCard(senderUid)?.RadioBold ?? false;
+    }
+    // Cats edit
 
     /// <inheritdoc cref="TelecomServerComponent"/>
     private bool HasActiveServer(MapId mapId, string channelId)

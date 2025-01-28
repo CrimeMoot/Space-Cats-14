@@ -11,6 +11,11 @@ ui-options-apply = Сохранить и применить
 ui-options-reset-all = Сброс изменений
 ui-options-default = Сброс к настройкам по умолчанию
 ui-options-value-percent = { TOSTRING($value, "P0") }
+ui-options-chat-icons-enable = Использовать иконки в чате
+radio-icon-tag-short = [radicon path="{$path}" text="{$text}" color="{$color}"]
+radio-icon-tag = [radicon path="{$path}" scale={$scale} text="{$text}" color="{$color}"]
+texture-tag-short = [tex path="{$path}"]
+texture-tag = [tex path="{$path}" scale={$scale}]
 
 # Misc/General menu
 

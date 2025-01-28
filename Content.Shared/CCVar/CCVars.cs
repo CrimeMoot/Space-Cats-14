@@ -20,6 +20,13 @@ public sealed partial class CCVars : CVars
     public static readonly CVarDef<bool> DebugOptionVisualizerTest =
         CVarDef.Create("debug.option_visualizer_test", false, CVar.CLIENTONLY);
 
+     /*
+     * Radio chat icons
+     */
+
+    public static readonly CVarDef<bool> ChatIconsEnable =
+        CVarDef.Create("chat_icon.enable", true, CVar.CLIENTONLY | CVar.ARCHIVE);
+
     /// <summary>
     /// Set to true to disable parallel processing in the pow3r solver.
     /// </summary>
