@@ -1,3 +1,4 @@
+using System.Globalization;
 using Content.Server.Administration.Logs;
 using Content.Server.Backmen.Language;
 using Content.Server.Chat.Systems;
@@ -7,10 +8,15 @@ using Content.Shared.Silicons.Borgs.Components;
 using Content.Shared.Silicons.StationAi;
 using Content.Shared.Backmen.Language;
 using Content.Server.VoiceMask;
+using Content.Shared.Access.Components;
 using Content.Shared.Chat;
 using Content.Shared.Database;
+using Content.Shared.Inventory;
+using Content.Shared.PDA;
 using Content.Shared.Radio;
 using Content.Shared.Radio.Components;
+using Content.Shared.Silicons.Borgs.Components;
+using Content.Shared.Silicons.StationAi;
 using Content.Shared.Speech;
 using Robust.Shared.Map;
 using Robust.Shared.Network;
@@ -18,7 +24,7 @@ using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Replays;
-using Robust.Shared.Utility;
+using Robust.Shared.Utility
 
 namespace Content.Server.Radio.EntitySystems;
 
@@ -34,6 +40,7 @@ public sealed class RadioSystem : EntitySystem
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly LanguageSystem _language = default!;
+    [Dependency] private readonly InventorySystem _inventorySystem = default!;
 
     // set used to prevent radio feedback loops.
     private readonly HashSet<string> _messages = new();

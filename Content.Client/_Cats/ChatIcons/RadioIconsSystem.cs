@@ -1,5 +1,5 @@
 using Content.Client.UserInterface.Systems.Chat;
-using Content.Shared._Cats.CCVars;
+using Content.Shared.CCVars;
 using Robust.Client.UserInterface;
 using Robust.Shared.Configuration;
 
