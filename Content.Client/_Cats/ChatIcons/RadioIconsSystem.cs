@@ -14,14 +14,14 @@ public sealed class ChatIconsSystem : EntitySystem
     {
         base.Initialize();
 
-        _cfg.OnValueChanged(CCVars.ChatIconsEnable, OnRadioIconsChanged, true);
+        _cfg.OnValueChanged(CVars.ChatIconsEnable, OnRadioIconsChanged, true);
     }
 
     public override void Shutdown()
     {
         base.Shutdown();
 
-        _cfg.UnsubValueChanged(CCVars.ChatIconsEnable, OnRadioIconsChanged);
+        _cfg.UnsubValueChanged(CVars.ChatIconsEnable, OnRadioIconsChanged);
     }
 
     private void OnRadioIconsChanged(bool enable)

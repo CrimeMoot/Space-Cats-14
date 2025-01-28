@@ -21,7 +21,7 @@ public sealed class RadioIconTag : IMarkupTag
     /// <inheritdoc/>
     public bool TryGetControl(MarkupNode node, [NotNullWhen(true)] out Control? control)
     {
-        if (_cfg.GetCVar(CCVars.ChatIconsEnable))
+        if (_cfg.GetCVar(CVars.ChatIconsEnable))
         {
             if (!node.Attributes.TryGetValue("path", out var rawPath))
             {
